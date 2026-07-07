@@ -11,26 +11,41 @@ const LERP_SPEED: float = 0.08
 var jumps: int = 0
 const MAX_JUMPS: int = 2
 
+var dashes: int = 0
+const MAX_DASHES: int = 1
+const DASH_VEL = 3000
+var dash_cd = false
+
+
 var direction: float = 0
 var last_dir: float = 0
 var jmp_debounce = false
 
 const WALL_JUMP_X_VEL = 2400
 
+var coyote_time_valid = false
+var coyote_time_started = false
+const COYOTE_TIME = 0.22
+
 func process_jump_y(j_add: bool):
 	if j_add: jumps += 1
-	velocity.y = BASE_JUMP
+	
+	# TODO: make second jump more powerful, but make sure it actually works at negative velocity
+	velocity.y = BASE_JUMP 
 
 			
 	get_tree().create_timer(0.1).timeout.connect(func():
 		jmp_debounce = false
 		)
+	
+# one of the one liners of all time
+func get_jump_condition(wall: bool):
+	return not jmp_debounce and ((Input.is_action_just_pressed("jump") and ((wall and jumps <= MAX_JUMPS) or jumps < MAX_JUMPS)) or (Input.is_action_pressed("jump") and jumps == 0))
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
-	if not is_on_floor():
+	if not is_on_floor(): #TODO: add slam particles
 		if Input.is_action_pressed("down"):
-			print("DOWN")
 			velocity += (get_gravity() * 3) * delta
 		else:
 			if is_on_wall():
@@ -38,13 +53,25 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity += get_gravity() * delta
 		if jumps == 0:
-			jumps = 1
+			if not coyote_time_started:
+				coyote_time_started = true
+				coyote_time_valid = true
+				get_tree().create_timer(COYOTE_TIME).timeout.connect(func():
+					if jumps == 0:
+						jumps = 1
+						print("cy time")
+					coyote_time_valid = false
+					)
+			#elif not coyote_time_valid:
+				#jumps = 1
 	else:
+		coyote_time_started = false
+		coyote_time_valid = false
 		jumps = 0
+		dashes = 0
 	
 	if is_on_wall():
-		if Input.is_action_just_pressed("jump") and jumps <= MAX_JUMPS and not jmp_debounce:
-			print("WALL")
+		if get_jump_condition(true):
 			if get_wall_normal().normalized().x == -1: # left
 				velocity.x = -WALL_JUMP_X_VEL
 			else:
@@ -52,8 +79,10 @@ func _physics_process(delta: float) -> void:
 			curr_accel = 0
 			process_jump_y(false)
 	else:
-		if Input.is_action_just_pressed("jump") and jumps < MAX_JUMPS and not jmp_debounce:
+		if get_jump_condition(false):
 			process_jump_y(true)
+	
+
 
 	
 	direction = Input.get_axis("left", "right")
@@ -68,5 +97,12 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = lerp(velocity.x, move_toward(velocity.x, 0, current_speed), LERP_SPEED)
 		curr_accel = 0
-	print (curr_accel)
+		
+	if Input.is_action_just_pressed("dash") and dashes < MAX_DASHES and not dash_cd:
+		dash_cd = true
+		velocity.x = last_dir * DASH_VEL
+		get_tree().create_timer(0.75).timeout.connect(func():
+			dash_cd = false
+		)
+		
 	move_and_slide()
