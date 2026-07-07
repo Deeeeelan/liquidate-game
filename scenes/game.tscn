@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://dfh1g4g1f8ts7" path="res://assets/images/items_spritesheet.png" id="5_iywne"]
 [ext_resource type="Texture2D" uid="uid://c8mccqmns3yh7" path="res://assets/images/truck.png" id="8_0tnpc"]
 [ext_resource type="Script" uid="uid://cvr8s0enst0qp" path="res://scripts/gui.gd" id="8_gee14"]
+[ext_resource type="PackedScene" uid="uid://bdn451he14u76" path="res://assets/nodes/cash.tscn" id="8_kvpfn"]
+[ext_resource type="Texture2D" uid="uid://cl0jrf66m5f27" path="res://assets/images/ground_outside.png" id="9_vtaks"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
 atlas = ExtResource("1_p57ef")
@@ -118,10 +120,6 @@ autostart = true
 position = Vector2(192, -192)
 zoom = Vector2(0.5, 0.5)
 
-[node name="Icon" type="Sprite2D" parent="Node2D" unique_id=1197882545]
-position = Vector2(244, 147)
-texture = ExtResource("2_yqjtg")
-
 [node name="Terrain" type="Node2D" parent="Node2D" unique_id=691036309]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Node2D/Terrain" unique_id=700055049]
@@ -169,6 +167,9 @@ texture = ExtResource("3_lnu2h")
 position = Vector2(-320, -64)
 sprite = SubResource("AtlasTexture_iywne")
 
+[node name="Cash" parent="Node2D" unique_id=805602659 instance=ExtResource("8_kvpfn")]
+position = Vector2(-832, -64)
+
 [node name="Item2" parent="Node2D" unique_id=889268876 instance=ExtResource("4_lbhrr")]
 position = Vector2(1200, -192)
 sprite = SubResource("AtlasTexture_iywne")
@@ -187,6 +188,14 @@ texture = ExtResource("8_0tnpc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Truck" unique_id=894082097]
 position = Vector2(-158.5, 2.5)
 shape = SubResource("RectangleShape2D_vtaks")
+
+[node name="Parallax2D" type="Parallax2D" parent="Node2D" unique_id=670803365]
+scroll_offset = Vector2(0, 384)
+repeat_size = Vector2(512, 0)
+repeat_times = 10
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Parallax2D" unique_id=1592108301]
+texture = ExtResource("9_vtaks")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
 

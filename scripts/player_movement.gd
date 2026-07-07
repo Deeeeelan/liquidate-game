@@ -110,10 +110,18 @@ func _input(event: InputEvent) -> void:
 			tween.play()
 			selected_item.queue_free()
 
+func interact_collide(area: Area2D):
+	if area.is_in_group("instant"):
+		GameManager.score += area.value
+		area.queue_free()
+
 func _ready() -> void:
 	$FindTick.timeout.connect(find_tick)
-
+	$Interact.area_entered.connect(interact_collide)
 func _physics_process(delta: float) -> void:
+	
+
+	
 	# ledge grabbing: (I need to plan this out since I dunno how to visualize this)
 	# uh so basically horiz. raycast in char direction + raycast offet in direction facing down
 	# if raycasts are the some collision = distance < certian param jump is overriden and player

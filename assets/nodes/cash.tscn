@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bdn451he14u76"]
+
+[ext_resource type="Script" uid="uid://clyson8cvhpdt" path="res://scripts/item.gd" id="1_arnp4"]
+[ext_resource type="Texture2D" uid="uid://dfh1g4g1f8ts7" path="res://assets/images/items_spritesheet.png" id="2_0tifm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iywne"]
+atlas = ExtResource("2_0tifm")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8tn5n"]
+size = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
+atlas = ExtResource("2_0tifm")
+region = Rect2(0, 0, 128, 128)
+
+[node name="Cash" type="Area2D" unique_id=805602659 groups=["instant"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_arnp4")
+value = 10000
+sprite = SubResource("AtlasTexture_iywne")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1037176821]
+shape = SubResource("RectangleShape2D_8tn5n")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1404169026]
+texture = SubResource("AtlasTexture_p57ef")
