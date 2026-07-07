@@ -15,6 +15,10 @@ run/main_scene="uid://c3alyifl3jq2k"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/images/icon.svg"
 
+[autoload]
+
+GameManager="*uid://b8k3aifumi6g2"
+
 [display]
 
 window/stretch/mode="canvas_items"
@@ -35,6 +39,7 @@ folder_colors={
 [global_group]
 
 item=""
+truck=""
 
 [input]
 

@@ -2,6 +2,11 @@ extends CharacterBody2D
 
 @export var select: AnimatedSprite2D
 
+@export var debris: Node2D
+
+@export var items: Array[Dictionary] = []
+var max_items = 3
+
 const BASE_SPEED: float = 800.0
 const MAX_SPEED: float = 1300.0
 var current_speed: float = 0.0
@@ -75,7 +80,36 @@ func find_tick():
 	else:
 		selected_item = null
 		select.visible = false
-		
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("pickup"):
+		if $Interact.overlaps_area(%Truck):
+			var total = 0
+			for item in items:
+				total += item.value
+				item.gui.queue_free()
+			items.clear()
+			GameManager.score += total
+			
+		elif len(items) < max_items and selected_item != null:
+			var tex_copy = selected_item.sprite.duplicate()
+			var tex_rect = TextureRect.new()
+			tex_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+			tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+			tex_rect.texture = tex_copy
+			%ItemsGUI.add_child(tex_rect)
+			items.append({sprite = selected_item.sprite.duplicate(), value = selected_item.value, gui = tex_rect})
+
+			var sprite = Sprite2D.new()
+			sprite.texture = selected_item.sprite
+			sprite.position = selected_item.position
+			debris.add_child(sprite)
+			var tween = get_tree().create_tween().set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_IN_OUT)
+			tween.tween_property(sprite, "global_position", global_position, 0.35)
+			tween.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0, 0.0), 0.2)
+			tween.play()
+			selected_item.queue_free()
+
 func _ready() -> void:
 	$FindTick.timeout.connect(find_tick)
 
@@ -140,7 +174,7 @@ func _physics_process(delta: float) -> void:
 				get_tree().create_timer(COYOTE_TIME).timeout.connect(func():
 					if jumps == 0:
 						jumps = 1
-						print("cy time")
+						# print("cy time")
 					coyote_time_valid = false
 					)
 			#elif not coyote_time_valid:
@@ -160,7 +194,7 @@ func _physics_process(delta: float) -> void:
 	if not grab_ledge:
 		if is_on_wall():
 			if get_jump_condition(true): #TODO: change momentumn to direction of wall jump
-				print(grab_ledge)
+				#print(grab_ledge)
 				if get_wall_normal().normalized().x == -1: # left
 					velocity.x = -WALL_JUMP_X_VEL
 				else:
