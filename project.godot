@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="liquidate-game"
+run/main_scene="uid://c3alyifl3jq2k"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/images/icon.svg"
 

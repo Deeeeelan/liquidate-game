@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dg717e781qctt"]
+
+[node name="Game" type="Node" unique_id=1171329590]
+
+[node name="Node2D" type="Node2D" parent="." unique_id=935136484]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=79782818]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
