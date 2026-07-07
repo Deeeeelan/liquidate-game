@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@export var select: AnimatedSprite2D
 
 const BASE_SPEED: float = 800.0
 const MAX_SPEED: float = 1300.0
@@ -35,6 +36,8 @@ var can_slam = false
 var grab_ledge = false
 var ledge_check = false
 
+var selected_item: Area2D
+
 func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
 	var node = $Sprite2D.duplicate()
 	node.scale = Vector2(0.2, 0.2)
@@ -43,13 +46,9 @@ func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
 	node.global_position = pos
 
 func process_jump_y(j_add: bool):
-	if j_add: jumps += 1
-	
-	# TODO: make second jump more powerful, but make sure it actually works at negative velocity
-	
+	if j_add: jumps += 1	
 	velocity.y = min(BASE_JUMP, velocity.y + BASE_JUMP)
-
-			
+	
 	get_tree().create_timer(0.1).timeout.connect(func():
 		jmp_debounce = false
 		)
@@ -58,9 +57,29 @@ func process_jump_y(j_add: bool):
 func get_jump_condition(wall: bool):
 	return not jmp_debounce and ((Input.is_action_just_pressed("jump") and ((wall and jumps <= MAX_JUMPS) or jumps < MAX_JUMPS)) or (Input.is_action_pressed("jump") and jumps == 0))
 
+func find_tick():
+	var cols = $Pickup.get_overlapping_areas()
+	var closest_col: Area2D
+	var closest_dist = 9999
+	for col in cols:
+		if col.is_in_group("item"):
+			if (col.position - position).length() < closest_dist:
+				closest_dist = (col.position - position).length()
+				closest_col = col
+	if closest_col:
+		selected_item = closest_col
+		var tween = get_tree().create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tween.tween_property(select, "position", closest_col.position, 0.55)
+		tween.play()
+		select.visible = true
+	else:
+		selected_item = null
+		select.visible = false
+		
+func _ready() -> void:
+	$FindTick.timeout.connect(find_tick)
+
 func _physics_process(delta: float) -> void:
-	
-	
 	# ledge grabbing: (I need to plan this out since I dunno how to visualize this)
 	# uh so basically horiz. raycast in char direction + raycast offet in direction facing down
 	# if raycasts are the some collision = distance < certian param jump is overriden and player

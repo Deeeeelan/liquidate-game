@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b2yocptfor0lo"]
+
+[ext_resource type="Script" uid="uid://clyson8cvhpdt" path="res://scripts/item.gd" id="1_uxlwd"]
+[ext_resource type="Texture2D" uid="uid://dfh1g4g1f8ts7" path="res://assets/images/items_spritesheet.png" id="2_y2xdm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8tn5n"]
+size = Vector2(128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
+atlas = ExtResource("2_y2xdm")
+region = Rect2(0, 0, 128, 128)
+
+[node name="Item" type="Area2D" unique_id=1422025864 groups=["item"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_uxlwd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1364826665]
+shape = SubResource("RectangleShape2D_8tn5n")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=360735889]
+texture = SubResource("AtlasTexture_p57ef")
