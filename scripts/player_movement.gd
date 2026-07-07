@@ -20,7 +20,7 @@ const MAX_JUMPS: int = 2
 
 var dashes: int = 0
 const MAX_DASHES: int = 1
-const DASH_VEL: float  = 3000
+const DASH_VEL: float  = 2750
 var dash_cd = false
 const DASH_TIME: float  = 0.75
 
@@ -41,6 +41,9 @@ var can_slam = false
 var grab_ledge = false
 var ledge_check = false
 
+const SLIDE_VEL = 3000
+var slide_cd = false
+const Slide_TIME: float  = 0.7
 var selected_item: Area2D
 
 func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
@@ -136,16 +139,18 @@ func _physics_process(delta: float) -> void:
 		var horiz_query = PhysicsRayQueryParameters2D.create(origin, offset_pos)
 		horiz_query.exclude = [self]
 		var horiz_result = space_state.intersect_ray(horiz_query)
-		var down_query = PhysicsRayQueryParameters2D.create(offset_pos + Vector2(0, -255), offset_pos + Vector2(0, 32))
+		var down_query = PhysicsRayQueryParameters2D.create(offset_pos + Vector2(0, -129), offset_pos + Vector2(0, 32))
 		var down_result = space_state.intersect_ray(down_query)
+		var air_query = PhysicsRayQueryParameters2D.create(offset_pos + Vector2(0, -132), offset_pos + Vector2(0, -129))
+		var air_result = space_state.intersect_ray(air_query)
 		
 		# get_tree().create_timer(randf(0.005, 0.06)).timeout.connect(func():)
 		#debug_point(origin, Color(0.0, 0.651, 0.604, 1.0))
 		#debug_point(offset_pos, Color(0.0, 0.651, 0.604, 1.0))
-		#debug_point(offset_pos + Vector2(0, -255), Color(1.0, 0.208, 0.604, 1.0))
+		#debug_point(offset_pos + Vector2(0, -129), Color(1.0, 0.208, 0.604, 1.0))
 		#debug_point(offset_pos + Vector2(0, 32), Color(1.0, 0.208, 0.604, 1.0))
 		
-		if horiz_result and down_result and horiz_result.collider == down_result.collider and not grab_ledge:
+		if horiz_result and down_result and not air_result and not grab_ledge:
 			grab_ledge = true
 			var target_pos = down_result.position - Vector2(0, 64)
 			#debug_point(target_pos )
@@ -189,7 +194,7 @@ func _physics_process(delta: float) -> void:
 				#jumps = 1
 	else:
 		if Input.is_action_pressed("down") and can_slam:
-			print("SLAM (placeholder)")
+			print("SLAM (placeholder)") #TODO
 		can_slam = false
 			
 		coyote_time_started = false
@@ -223,6 +228,13 @@ func _physics_process(delta: float) -> void:
 		else:
 			last_dir = direction
 			curr_accel = 0.2
+			
+		if is_on_floor() and Input.is_action_pressed("down") and not slide_cd:
+			slide_cd = true
+			velocity.x = direction * SLIDE_VEL
+			get_tree().create_timer(Slide_TIME).timeout.connect(func():
+				slide_cd = false
+			)
 	else:
 		velocity.x = lerp(velocity.x, move_toward(velocity.x, 0, current_speed), LERP_SPEED)
 		curr_accel = 0
