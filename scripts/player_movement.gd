@@ -46,7 +46,8 @@ func process_jump_y(j_add: bool):
 	if j_add: jumps += 1
 	
 	# TODO: make second jump more powerful, but make sure it actually works at negative velocity
-	velocity.y = BASE_JUMP 
+	
+	velocity.y = min(BASE_JUMP, velocity.y + BASE_JUMP)
 
 			
 	get_tree().create_timer(0.1).timeout.connect(func():
@@ -66,8 +67,6 @@ func _physics_process(delta: float) -> void:
 	# smoothly moves/"clips" corner without losing momentum
 	# NOTE: player cannot grab onto ledges greater than raycast offset
 	if Input.is_action_pressed("jump") and not ledge_check:
-		print("check", ledge_check)
-
 		ledge_check = true
 		var space_state = get_world_2d().direct_space_state
 		var origin = global_position + Vector2(last_dir * 32, 48) # bottom-ish left corner
@@ -101,13 +100,10 @@ func _physics_process(delta: float) -> void:
 				collision_mask = 1
 				grab_ledge = false
 			)
-			print("LEDGE", target_pos)
 		get_tree().create_timer(0.1).timeout.connect(func():
 			ledge_check = false
 		)
-		
-			
-		
+
 	# floor conditions, coyote, gravity, and slam
 	if not is_on_floor(): #TODO: add slam particles
 		if Input.is_action_pressed("down"):
