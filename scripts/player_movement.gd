@@ -31,6 +31,17 @@ const COYOTE_TIME = 0.22
 
 const SLAM_GRAV_MULT: float = 4.0
 var can_slam = false
+
+var grab_ledge = false
+var ledge_check = false
+
+func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
+	var node = $Sprite2D.duplicate()
+	node.scale = Vector2(0.2, 0.2)
+	node.modulate = color
+	$'..'.add_child(node)
+	node.global_position = pos
+
 func process_jump_y(j_add: bool):
 	if j_add: jumps += 1
 	
@@ -47,7 +58,57 @@ func get_jump_condition(wall: bool):
 	return not jmp_debounce and ((Input.is_action_just_pressed("jump") and ((wall and jumps <= MAX_JUMPS) or jumps < MAX_JUMPS)) or (Input.is_action_pressed("jump") and jumps == 0))
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	
+	
+	# ledge grabbing: (I need to plan this out since I dunno how to visualize this)
+	# uh so basically horiz. raycast in char direction + raycast offet in direction facing down
+	# if raycasts are the some collision = distance < certian param jump is overriden and player
+	# smoothly moves/"clips" corner without losing momentum
+	# NOTE: player cannot grab onto ledges greater than raycast offset
+	if Input.is_action_pressed("jump") and not ledge_check:
+		print("check", ledge_check)
+
+		ledge_check = true
+		var space_state = get_world_2d().direct_space_state
+		var origin = global_position + Vector2(last_dir * 32, 48) # bottom-ish left corner
+		
+		var offset_pos = origin + Vector2(last_dir * 64, 0)
+		var horiz_query = PhysicsRayQueryParameters2D.create(origin, offset_pos)
+		horiz_query.exclude = [self]
+		var horiz_result = space_state.intersect_ray(horiz_query)
+		var down_query = PhysicsRayQueryParameters2D.create(offset_pos + Vector2(0, -255), offset_pos + Vector2(0, 32))
+		var down_result = space_state.intersect_ray(down_query)
+		
+		# get_tree().create_timer(randf(0.005, 0.06)).timeout.connect(func():)
+		#debug_point(origin, Color(0.0, 0.651, 0.604, 1.0))
+		#debug_point(offset_pos, Color(0.0, 0.651, 0.604, 1.0))
+		#debug_point(offset_pos + Vector2(0, -255), Color(1.0, 0.208, 0.604, 1.0))
+		#debug_point(offset_pos + Vector2(0, 32), Color(1.0, 0.208, 0.604, 1.0))
+		
+		if horiz_result and down_result and horiz_result.collider == down_result.collider and not grab_ledge:
+			grab_ledge = true
+			var target_pos = down_result.position - Vector2(0, 64)
+			#debug_point(target_pos )
+			#debug_point(horiz_result.position, Color(0.722, 0.526, 0.0, 1.0))
+
+			var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
+			tween.tween_property(self, "global_position", target_pos, 0.15)
+			collision_layer = 0
+			collision_mask = 0
+			tween.play()
+			tween.finished.connect(func():
+				collision_layer = 1
+				collision_mask = 1
+				grab_ledge = false
+			)
+			print("LEDGE", target_pos)
+		get_tree().create_timer(0.1).timeout.connect(func():
+			ledge_check = false
+		)
+		
+			
+		
+	# floor conditions, coyote, gravity, and slam
 	if not is_on_floor(): #TODO: add slam particles
 		if Input.is_action_pressed("down"):
 			can_slam = true
@@ -78,19 +139,24 @@ func _physics_process(delta: float) -> void:
 		coyote_time_valid = false
 		jumps = 0
 		dashes = 0
+			
 	
-	if is_on_wall():
-		if get_jump_condition(true):
-			if get_wall_normal().normalized().x == -1: # left
-				velocity.x = -WALL_JUMP_X_VEL
-			else:
-				velocity.x = WALL_JUMP_X_VEL
-			curr_accel = 0
-			process_jump_y(false)
-	else:
-		if get_jump_condition(false):
-			process_jump_y(true)
+	# jumps
+	if not grab_ledge:
+		if is_on_wall():
+			if get_jump_condition(true): #TODO: change momentumn to direction of wall jump
+				print(grab_ledge)
+				if get_wall_normal().normalized().x == -1: # left
+					velocity.x = -WALL_JUMP_X_VEL
+				else:
+					velocity.x = WALL_JUMP_X_VEL
+				curr_accel = 0
+				process_jump_y(false)
+		else:
+			if get_jump_condition(false):
+				process_jump_y(true)
 	
+	# actual horizontal movement (and dashing)
 	direction = Input.get_axis("left", "right")
 	if direction:
 		current_speed = lerpf(BASE_SPEED, MAX_SPEED, curr_accel)
@@ -110,5 +176,8 @@ func _physics_process(delta: float) -> void:
 		get_tree().create_timer(DASH_TIME).timeout.connect(func():
 			dash_cd = false
 		)
+	
+	grab_ledge = false
 		
 	move_and_slide()
+	
