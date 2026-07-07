@@ -163,6 +163,26 @@ shape = SubResource("RectangleShape2D_6sj1v")
 [node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D5" unique_id=1240586740]
 texture = ExtResource("3_lnu2h")
 
+[node name="StaticBody2D6" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1730338278]
+position = Vector2(-2192, -368)
+scale = Vector2(0.31962627, 7.599696)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D6" unique_id=1838612583]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D6" unique_id=1026543789]
+texture = ExtResource("3_lnu2h")
+
+[node name="StaticBody2D7" type="StaticBody2D" parent="Node2D/Terrain" unique_id=679654204]
+position = Vector2(-1792, -752)
+scale = Vector2(0.31962627, 7.599696)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D7" unique_id=572936957]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D7" unique_id=2037126714]
+texture = ExtResource("3_lnu2h")
+
 [node name="Item" parent="Node2D" unique_id=1422025864 instance=ExtResource("4_lbhrr")]
 position = Vector2(-320, -64)
 sprite = SubResource("AtlasTexture_iywne")

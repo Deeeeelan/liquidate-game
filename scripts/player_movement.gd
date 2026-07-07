@@ -30,6 +30,7 @@ var last_dir: float = 0
 var jmp_debounce = false
 
 const WALL_JUMP_X_VEL = 2400
+var last_wall_jump_dir = 0
 
 var coyote_time_valid = false
 var coyote_time_started = false
@@ -45,6 +46,8 @@ const SLIDE_VEL = 3000
 var slide_cd = false
 const Slide_TIME: float  = 0.7
 var selected_item: Area2D
+
+const GRAVITY_MULT: float = 1.5
 
 func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
 	var node = $Sprite2D.duplicate()
@@ -174,12 +177,12 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor(): #TODO: add slam particles
 		if Input.is_action_pressed("down"):
 			can_slam = true
-			velocity += (get_gravity() * SLAM_GRAV_MULT) * delta
+			velocity += (get_gravity() * GRAVITY_MULT * SLAM_GRAV_MULT) * delta
 		else:
 			if is_on_wall():
-				velocity += (get_gravity() / 2) * delta
+				velocity += (get_gravity() * GRAVITY_MULT / 2) * delta
 			else:
-				velocity += get_gravity() * delta
+				velocity += get_gravity() * GRAVITY_MULT * delta
 		if jumps == 0:
 			if not coyote_time_started:
 				coyote_time_started = true
@@ -212,7 +215,11 @@ func _physics_process(delta: float) -> void:
 					velocity.x = -WALL_JUMP_X_VEL
 				else:
 					velocity.x = WALL_JUMP_X_VEL
-				curr_accel = 0
+				last_wall_jump_dir = get_wall_normal().normalized().x
+				get_tree().create_timer(0.25).timeout.connect(func():
+					last_wall_jump_dir = 0
+				)
+				curr_accel = 0.65
 				process_jump_y(false)
 		else:
 			if get_jump_condition(false):
@@ -223,11 +230,17 @@ func _physics_process(delta: float) -> void:
 	if direction:
 		current_speed = lerpf(BASE_SPEED, MAX_SPEED, curr_accel)
 		velocity.x = lerp(velocity.x, direction * current_speed, LERP_SPEED)
-		if last_dir == direction and not is_on_wall() and curr_accel < 1.0:
-			curr_accel = minf(curr_accel + (ACCELERATION * delta), 1.0)
+		if last_wall_jump_dir != 0:
+			if direction == last_wall_jump_dir:
+				curr_accel = 0.75
+			else:
+				curr_accel = 0
 		else:
-			last_dir = direction
-			curr_accel = 0.2
+			if last_dir == direction and not is_on_wall() and curr_accel < 1.0:
+				curr_accel = minf(curr_accel + (ACCELERATION * delta), 1.0)
+			else:
+				last_dir = direction
+				curr_accel = 0.2
 			
 		if is_on_floor() and Input.is_action_pressed("down") and not slide_cd:
 			slide_cd = true
