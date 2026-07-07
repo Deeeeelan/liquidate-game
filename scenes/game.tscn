@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bwa44mqqlcjrc" path="res://scripts/player_movement.gd" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://bkch85xeq0d2s" path="res://assets/images/icon.svg" id="2_yqjtg"]
+[ext_resource type="Texture2D" uid="uid://dwvkg1ed8dxbd" path="res://assets/images/placeholder.png" id="3_lnu2h"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6sj1v"]
 radius = 64.0
@@ -9,11 +10,15 @@ height = 128.0
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_6sj1v"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6sj1v"]
+size = Vector2(128, 128)
+
 [node name="Game" type="Node" unique_id=1171329590]
 
 [node name="Node2D" type="Node2D" parent="." unique_id=935136484]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="Node2D" unique_id=296477326]
+position = Vector2(64, -64)
 script = ExtResource("1_uwrxv")
 
 [node name="Sprite2D" type="Sprite2D" parent="Node2D/CharacterBody2D" unique_id=1678045591]
@@ -25,17 +30,57 @@ shape = SubResource("CapsuleShape2D_6sj1v")
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Node2D/CharacterBody2D" unique_id=1747893914]
 remote_path = NodePath("../../Camera2D")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Node2D" unique_id=700055049]
-position = Vector2(0, 112)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=544337289]
-shape = SubResource("WorldBoundaryShape2D_6sj1v")
-
 [node name="Camera2D" type="Camera2D" parent="Node2D" unique_id=1661264767]
+position = Vector2(64, -64)
+zoom = Vector2(0.5, 0.5)
 
 [node name="Icon" type="Sprite2D" parent="Node2D" unique_id=1197882545]
 position = Vector2(244, 147)
 texture = ExtResource("2_yqjtg")
+
+[node name="Terrain" type="Node2D" parent="Node2D" unique_id=691036309]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D/Terrain" unique_id=700055049]
+position = Vector2(0, 112)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D" unique_id=544337289]
+shape = SubResource("WorldBoundaryShape2D_6sj1v")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1564751344]
+position = Vector2(-320, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D2" unique_id=390168323]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D2" unique_id=1573095851]
+texture = ExtResource("3_lnu2h")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Node2D/Terrain" unique_id=390028746]
+position = Vector2(-576, -64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D3" unique_id=639271634]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D3" unique_id=142611040]
+texture = ExtResource("3_lnu2h")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Node2D/Terrain" unique_id=909578158]
+position = Vector2(-1104, -192)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D4" unique_id=29915869]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D4" unique_id=1140275936]
+texture = ExtResource("3_lnu2h")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="Node2D/Terrain" unique_id=925925572]
+position = Vector2(-1088, -320)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D5" unique_id=1700319183]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D5" unique_id=1240586740]
+texture = ExtResource("3_lnu2h")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
 
