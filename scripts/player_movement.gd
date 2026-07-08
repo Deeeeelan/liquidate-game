@@ -53,6 +53,8 @@ const GRAVITY_MULT: float = 1.5
 var has_dash_mom = false
 
 const GLASS_SHARDS = preload("res://assets/nodes/glass_shards.tscn")
+const DASH = preload("res://assets/nodes/dash.tscn")
+const CASH_REGISTER = preload("res://assets/audio/cash-register.mp3")
 
 func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
 	var node = $Sprite2D.duplicate()
@@ -117,6 +119,7 @@ func _input(event: InputEvent) -> void:
 			tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 			tex_rect.texture = tex_copy
 			%ItemsGUI.add_child(tex_rect)
+			%CollectSFX.play()
 			items.append({sprite = selected_item.sprite.duplicate(), value = selected_item.value, gui = tex_rect})
 
 			var sprite = Sprite2D.new()
@@ -131,13 +134,17 @@ func _input(event: InputEvent) -> void:
 
 func interact_collide(area: Area2D):
 	if area.is_in_group("instant"):
+		%CashSFX.get_stream_playback().play_stream(CASH_REGISTER)
+		
 		GameManager.score += area.value
 		area.queue_free()
 
 func _ready() -> void:
+	
 	$FindTick.timeout.connect(find_tick)
 	$Interact.area_entered.connect(interact_collide)
 	$Sprite2D.play("idle")
+	%CashSFX.play()
 
 func _physics_process(delta: float) -> void:
 	if has_dash_mom:
@@ -271,7 +278,7 @@ func _physics_process(delta: float) -> void:
 		
 		current_speed = lerpf(BASE_SPEED, MAX_SPEED, curr_accel)
 		velocity.x = lerp(velocity.x, direction * current_speed, LERP_SPEED)
-		if last_dir != direction:
+		if last_dir != direction and direction != 0:
 			var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
 			tween.tween_property($Sprite2D, "scale", Vector2(direction, 1), 0.1)
 			tween.play()
@@ -317,15 +324,25 @@ func _physics_process(delta: float) -> void:
 		dash_cd = true
 		velocity.x = last_dir * DASH_VEL
 		has_dash_mom = true
+		
+		var dash_parti = DASH.instantiate()
+		dash_parti.position = position
+		dash_parti.scale = Vector2(-last_dir , 1)
+		dash_parti.emitting = true
+		debris.add_child(dash_parti)
+		get_tree().create_timer(4).timeout.connect(func():
+			dash_parti.queue_free()
+		)
+		
 		var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
-		tween.tween_property($Sprite2D, "scale",Vector2(direction, 0.7), 0.15)
-		tween.tween_property($Sprite2D, "scale", Vector2(direction, 1), 0.5)
+		tween.tween_property($Sprite2D, "scale",Vector2(last_dir, 0.7), 0.15)
+		tween.tween_property($Sprite2D, "scale", Vector2(last_dir, 1), 0.5)
 		tween.play()
 		tween.finished.connect(func():
 			var tween2 = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
-			tween2.tween_property($Sprite2D, "scale", Vector2(direction, 1), 0.1)
+			tween2.tween_property($Sprite2D, "scale", Vector2(last_dir * 1, 1), 0.1)
 			tween2.play()
-			)
+		)
 		get_tree().create_timer(0.35).timeout.connect(func():
 			has_dash_mom = false
 		)
