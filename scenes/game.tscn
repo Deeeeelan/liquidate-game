@@ -11,10 +11,12 @@
 [ext_resource type="Texture2D" uid="uid://c8mccqmns3yh7" path="res://assets/images/truck.png" id="8_0tnpc"]
 [ext_resource type="Script" uid="uid://cvr8s0enst0qp" path="res://scripts/gui.gd" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://bdn451he14u76" path="res://assets/nodes/cash.tscn" id="8_kvpfn"]
+[ext_resource type="Texture2D" uid="uid://dg2jn3r4sb025" path="res://assets/images/background.png" id="9_ca42v"]
 [ext_resource type="Texture2D" uid="uid://cl0jrf66m5f27" path="res://assets/images/ground_outside.png" id="9_vtaks"]
 [ext_resource type="Texture2D" uid="uid://du3q4pw77nq2f" path="res://assets/images/tutorials/tut_movement.png" id="10_ir15t"]
 [ext_resource type="Texture2D" uid="uid://byacdnmove3dc" path="res://assets/images/tutorials/enter.png" id="11_ca42v"]
 [ext_resource type="Script" uid="uid://by1e1vtionn6g" path="res://scenes/tutorial.gd" id="12_kvuet"]
+[ext_resource type="AudioStream" uid="uid://tlc13f58asnv" path="res://assets/audio/cash-register.mp3" id="17_rysoc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
 atlas = ExtResource("1_p57ef")
@@ -83,6 +85,11 @@ load_path = "res://.godot/imported/tut_movement.png-e6127774a1c4c2b49bf36d084b26
 
 [sub_resource type="LabelSettings" id="LabelSettings_6sj1v"]
 font_size = 64
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rysoc"]
+font_size = 64
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6sj1v"]
 atlas = ExtResource("5_iywne")
@@ -185,13 +192,21 @@ texture = ExtResource("8_0tnpc")
 position = Vector2(-158.5, 2.5)
 shape = SubResource("RectangleShape2D_vtaks")
 
-[node name="Parallax2D" type="Parallax2D" parent="Node2D" unique_id=670803365]
+[node name="FloorPara" type="Parallax2D" parent="Node2D" unique_id=670803365]
 scroll_offset = Vector2(0, 384)
 repeat_size = Vector2(512, 0)
 repeat_times = 10
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Parallax2D" unique_id=1592108301]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/FloorPara" unique_id=1592108301]
 texture = ExtResource("9_vtaks")
+
+[node name="BGPara" type="Parallax2D" parent="Node2D" unique_id=389048964]
+z_index = -2
+repeat_size = Vector2(128, 128)
+repeat_times = 45
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/BGPara" unique_id=465470591]
+texture = ExtResource("9_ca42v")
 
 [node name="TutorialTriggers" type="Node2D" parent="Node2D" unique_id=8833584]
 
@@ -273,9 +288,10 @@ label_settings = SubResource("LabelSettings_6sj1v")
 horizontal_alignment = 1
 
 [node name="Score" type="Label" parent="CanvasLayer/Control/VBoxContainer" unique_id=1739834794]
+unique_name_in_owner = true
 layout_mode = 2
 text = "$100"
-label_settings = SubResource("LabelSettings_6sj1v")
+label_settings = SubResource("LabelSettings_rysoc")
 horizontal_alignment = 1
 
 [node name="ItemsGUI" type="HBoxContainer" parent="CanvasLayer/Control" unique_id=989217875]
@@ -297,3 +313,8 @@ stretch_mode = 4
 
 [node name="GameTimer" type="Timer" parent="." unique_id=768442589]
 autostart = true
+
+[node name="CashSFX" type="AudioStreamPlayer" parent="." unique_id=104237451]
+unique_name_in_owner = true
+stream = ExtResource("17_rysoc")
+volume_db = -17.0

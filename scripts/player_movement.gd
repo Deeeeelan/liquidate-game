@@ -91,15 +91,19 @@ func find_tick():
 		select.visible = false
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("pickup"):
-		if $Interact.overlaps_area(%Truck):
+	if event.is_action_pressed("pickup"): # SELL ITEMS
+		if $Interact.overlaps_area(%Truck) and len(items) > 0:
 			var total = 0
 			for item in items:
 				total += item.value
 				item.gui.queue_free()
 			items.clear()
 			GameManager.score += total
-			
+			%Score.label_settings.font_color = Color(0.0, 1.0, 0.0, 1.0)
+			%CashSFX.play()
+			var tween = get_tree().create_tween()
+			tween.tween_property(%Score.label_settings, "font_color", Color(0.0, 0.0, 0.0, 1.0), 1)
+			tween.play()
 		elif len(items) < max_items and selected_item != null:
 			var tex_copy = selected_item.sprite.duplicate()
 			var tex_rect = TextureRect.new()
