@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d28y4a73dnbs"
-path="res://.godot/imported/tut_movement.png-cab51af058a5bfbfdd07c72c1799b469.ctex"
+uid="uid://bcg75y01vo5v4"
+path="res://.godot/imported/tut_dash-Sheet.png-21397ef47639d7442cbfb2caf397dda7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/tut_movement.png"
-dest_files=["res://.godot/imported/tut_movement.png-cab51af058a5bfbfdd07c72c1799b469.ctex"]
+source_file="res://assets/images/tutorials/tut_dash-Sheet.png"
+dest_files=["res://.godot/imported/tut_dash-Sheet.png-21397ef47639d7442cbfb2caf397dda7.ctex"]
 
 [params]
 

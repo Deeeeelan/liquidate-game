@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://cvr8s0enst0qp" path="res://scripts/gui.gd" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://bdn451he14u76" path="res://assets/nodes/cash.tscn" id="8_kvpfn"]
 [ext_resource type="Texture2D" uid="uid://cl0jrf66m5f27" path="res://assets/images/ground_outside.png" id="9_vtaks"]
+[ext_resource type="Script" uid="uid://by1e1vtionn6g" path="res://scenes/tutorial.gd" id="12_kvuet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
 atlas = ExtResource("1_p57ef")
@@ -64,6 +65,9 @@ region = Rect2(0, 0, 128, 128)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vtaks"]
 size = Vector2(669, 389)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8tn5n"]
+size = Vector2(458, 74)
+
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kvpfn"]
 load_path = "res://.godot/imported/tut_movement.png-e6127774a1c4c2b49bf36d084b2674da.ctex"
 
@@ -86,38 +90,39 @@ sprite_frames = SubResource("SpriteFrames_6sj1v")
 frame_progress = 0.4671062
 script = ExtResource("2_u5sy4")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="Node2D" unique_id=296477326 node_paths=PackedStringArray("select", "debris")]
+[node name="Character" type="CharacterBody2D" parent="Node2D" unique_id=296477326 node_paths=PackedStringArray("select", "debris")]
+unique_name_in_owner = true
 z_index = 1
 position = Vector2(192, -192)
 script = ExtResource("1_uwrxv")
 select = NodePath("../Select")
 debris = NodePath("../Debris")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/CharacterBody2D" unique_id=1678045591]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Character" unique_id=1678045591]
 scale = Vector2(0.75, 1)
 texture = ExtResource("2_yqjtg")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/CharacterBody2D" unique_id=2065639098]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Character" unique_id=2065639098]
 shape = SubResource("CapsuleShape2D_6sj1v")
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Node2D/CharacterBody2D" unique_id=1747893914]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Node2D/Character" unique_id=1747893914]
 remote_path = NodePath("../../Camera2D")
 
-[node name="Pickup" type="Area2D" parent="Node2D/CharacterBody2D" unique_id=1218724146]
+[node name="Pickup" type="Area2D" parent="Node2D/Character" unique_id=1218724146]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/CharacterBody2D/Pickup" unique_id=1381012625]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Character/Pickup" unique_id=1381012625]
 shape = SubResource("CircleShape2D_6sj1v")
 
-[node name="Interact" type="Area2D" parent="Node2D/CharacterBody2D" unique_id=713558762]
+[node name="Interact" type="Area2D" parent="Node2D/Character" unique_id=713558762]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/CharacterBody2D/Interact" unique_id=1638733197]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Character/Interact" unique_id=1638733197]
 shape = SubResource("CircleShape2D_0tnpc")
 
-[node name="FindTick" type="Timer" parent="Node2D/CharacterBody2D" unique_id=1265941775]
+[node name="FindTick" type="Timer" parent="Node2D/Character" unique_id=1265941775]
 wait_time = 0.05
 autostart = true
 
@@ -222,6 +227,15 @@ repeat_times = 10
 [node name="Sprite2D" type="Sprite2D" parent="Node2D/Parallax2D" unique_id=1592108301]
 texture = ExtResource("9_vtaks")
 
+[node name="TutorialTriggers" type="Node2D" parent="Node2D" unique_id=8833584]
+
+[node name="Controls" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=16930842]
+script = ExtResource("12_kvuet")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/Controls" unique_id=926961293]
+position = Vector2(192, -32)
+shape = SubResource("RectangleShape2D_8tn5n")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
 
 [node name="Control" type="Control" parent="CanvasLayer" unique_id=79782818]
@@ -234,7 +248,6 @@ grow_vertical = 2
 script = ExtResource("8_gee14")
 
 [node name="Tutorial" type="Control" parent="CanvasLayer/Control" unique_id=243044962]
-visible = false
 layout_mode = 1
 anchor_left = 0.25
 anchor_top = 0.515
@@ -243,13 +256,16 @@ anchor_bottom = 0.96
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Tutorial" unique_id=301927428]
+[node name="ControlTex" type="TextureRect" parent="CanvasLayer/Control/Tutorial" unique_id=301927428]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = SubResource("CompressedTexture2D_kvpfn")
 expand_mode = 1
 stretch_mode = 5
