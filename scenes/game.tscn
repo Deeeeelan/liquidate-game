@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dg717e781qctt"]
 
+[ext_resource type="Script" uid="uid://b11a736y5det2" path="res://scripts/game_script.gd" id="1_dinhu"]
 [ext_resource type="Texture2D" uid="uid://cnfq0b0wtw103" path="res://assets/images/select-Sheet.png" id="1_p57ef"]
 [ext_resource type="Script" uid="uid://bwa44mqqlcjrc" path="res://scripts/player_movement.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bpvbvjlqr4ym0" path="res://scenes/select.gd" id="2_u5sy4"]
@@ -63,6 +64,9 @@ region = Rect2(0, 0, 128, 128)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vtaks"]
 size = Vector2(669, 389)
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kvpfn"]
+load_path = "res://.godot/imported/tut_movement.png-e6127774a1c4c2b49bf36d084b2674da.ctex"
+
 [sub_resource type="LabelSettings" id="LabelSettings_6sj1v"]
 font_size = 64
 
@@ -71,6 +75,7 @@ atlas = ExtResource("5_iywne")
 region = Rect2(0, 0, 128, 129)
 
 [node name="Game" type="Node" unique_id=1171329590]
+script = ExtResource("1_dinhu")
 
 [node name="Node2D" type="Node2D" parent="." unique_id=935136484]
 
@@ -228,27 +233,42 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("8_gee14")
 
-[node name="Controls Placeholder" type="Control" parent="CanvasLayer/Control" unique_id=243044962]
+[node name="Tutorial" type="Control" parent="CanvasLayer/Control" unique_id=243044962]
+visible = false
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -352.0
-offset_top = -196.0
-offset_right = 353.0
-offset_bottom = 209.0
+anchor_left = 0.25
+anchor_top = 0.515
+anchor_right = 0.75
+anchor_bottom = 0.96
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Score" type="Label" parent="CanvasLayer/Control" unique_id=1739834794]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Tutorial" unique_id=301927428]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = SubResource("CompressedTexture2D_kvpfn")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=911815911]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 88.0
+grow_horizontal = 2
+
+[node name="Timer" type="Label" parent="CanvasLayer/Control/VBoxContainer" unique_id=1045590922]
+layout_mode = 2
+text = "5:00"
+label_settings = SubResource("LabelSettings_6sj1v")
+horizontal_alignment = 1
+
+[node name="Score" type="Label" parent="CanvasLayer/Control/VBoxContainer" unique_id=1739834794]
+layout_mode = 2
 text = "$100"
 label_settings = SubResource("LabelSettings_6sj1v")
 horizontal_alignment = 1
@@ -269,3 +289,6 @@ layout_mode = 2
 texture = SubResource("AtlasTexture_6sj1v")
 expand_mode = 3
 stretch_mode = 4
+
+[node name="GameTimer" type="Timer" parent="." unique_id=768442589]
+autostart = true

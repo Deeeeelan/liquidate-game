@@ -155,7 +155,6 @@ func _physics_process(delta: float) -> void:
 		# debug_point(offset_pos + Vector2(0, -180), Color(1.0, 0.208, 0.604, 1.0))
 		#debug_point(offset_pos + Vector2(0, -132), Color(1.0, 0.208, 0.604, 1.0))
 		#debug_point(offset_pos + Vector2(0, 32), Color(1.0, 0.208, 0.604, 1.0))
-		print(air_result) #TODO: why does this visible intersect but return empty{}
 		if horiz_result and down_result and (not air_result) and (not grab_ledge):
 			grab_ledge = true
 			var target_pos = down_result.position - Vector2(0, 64)
