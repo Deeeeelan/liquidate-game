@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://cvr8s0enst0qp" path="res://scripts/gui.gd" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://bdn451he14u76" path="res://assets/nodes/cash.tscn" id="8_kvpfn"]
 [ext_resource type="Texture2D" uid="uid://cl0jrf66m5f27" path="res://assets/images/ground_outside.png" id="9_vtaks"]
+[ext_resource type="Texture2D" uid="uid://du3q4pw77nq2f" path="res://assets/images/tutorials/tut_movement.png" id="10_ir15t"]
+[ext_resource type="Texture2D" uid="uid://byacdnmove3dc" path="res://assets/images/tutorials/enter.png" id="11_ca42v"]
 [ext_resource type="Script" uid="uid://by1e1vtionn6g" path="res://scenes/tutorial.gd" id="12_kvuet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
@@ -66,15 +68,15 @@ region = Rect2(128, 0, 128, 129)
 atlas = ExtResource("6_kvuet")
 region = Rect2(0, 128, 128, 128)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_iywne"]
-atlas = ExtResource("5_iywne")
-region = Rect2(0, 0, 128, 128)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vtaks"]
 size = Vector2(669, 389)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8tn5n"]
 size = Vector2(458, 74)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iywne"]
+atlas = ExtResource("5_iywne")
+region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kvpfn"]
 load_path = "res://.godot/imported/tut_movement.png-e6127774a1c4c2b49bf36d084b2674da.ctex"
@@ -168,17 +170,6 @@ shape = SubResource("RectangleShape2D_6sj1v")
 modulate = Color(1, 1, 1, 0.56078434)
 texture = SubResource("AtlasTexture_trtic")
 
-[node name="Item" parent="Node2D" unique_id=1422025864 instance=ExtResource("4_lbhrr")]
-position = Vector2(-320, -64)
-sprite = SubResource("AtlasTexture_iywne")
-
-[node name="Cash" parent="Node2D" unique_id=805602659 instance=ExtResource("8_kvpfn")]
-position = Vector2(-832, -64)
-
-[node name="Item2" parent="Node2D" unique_id=889268876 instance=ExtResource("4_lbhrr")]
-position = Vector2(1200, -192)
-sprite = SubResource("AtlasTexture_iywne")
-
 [node name="Debris" type="Node2D" parent="Node2D" unique_id=1719721917]
 
 [node name="Truck" type="Area2D" parent="Node2D" unique_id=1997873876 groups=["truck"]]
@@ -206,10 +197,33 @@ texture = ExtResource("9_vtaks")
 
 [node name="Controls" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=16930842]
 script = ExtResource("12_kvuet")
+texture = ExtResource("10_ir15t")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/Controls" unique_id=926961293]
 position = Vector2(704, -32)
 shape = SubResource("RectangleShape2D_8tn5n")
+
+[node name="enter" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=1741836864]
+position = Vector2(208, -240)
+scale = Vector2(0.39131862, 6.4851394)
+script = ExtResource("12_kvuet")
+texture = ExtResource("11_ca42v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/enter" unique_id=1877708557]
+shape = SubResource("RectangleShape2D_8tn5n")
+
+[node name="Items" type="Node2D" parent="Node2D" unique_id=643897567]
+
+[node name="Item" parent="Node2D/Items" unique_id=1422025864 instance=ExtResource("4_lbhrr")]
+position = Vector2(-320, -64)
+sprite = SubResource("AtlasTexture_iywne")
+
+[node name="Cash" parent="Node2D/Items" unique_id=805602659 instance=ExtResource("8_kvpfn")]
+position = Vector2(-832, -64)
+
+[node name="Item2" parent="Node2D/Items" unique_id=889268876 instance=ExtResource("4_lbhrr")]
+position = Vector2(1200, -192)
+sprite = SubResource("AtlasTexture_iywne")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
 

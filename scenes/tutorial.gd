@@ -7,6 +7,7 @@ func _ready() -> void:
 	self.body_entered.connect(func(body: Node2D):
 		if body == %Character and not activated:
 			activated = true
+			%ControlTex.texture = texture
 			%ControlTex.modulate = Color(1.0, 1.0, 1.0, 0.0)
 			var tween = get_tree().create_tween()
 			tween.tween_property(%ControlTex, "modulate", Color(1.0, 1.0, 1.0, 1.0), 2.0)

@@ -43,6 +43,10 @@ truck=""
 instant=""
 glass=""
 
+[gui]
+
+theme/custom_font="uid://b8ff4u30u7f7i"
+
 [input]
 
 up={

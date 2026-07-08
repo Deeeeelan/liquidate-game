@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://c3alyifl3jq2k"]
 
 [ext_resource type="Script" uid="uid://cv35u86e4skms" path="res://scripts/title_button.gd" id="1_fgkus"]
+[ext_resource type="Texture2D" uid="uid://cvbe21broh8nu" path="res://assets/images/cover_image.png" id="2_sa3yf"]
 
 [node name="Node2D" type="Node" unique_id=1361895850]
 
-[node name="Control" type="Control" parent="." unique_id=1037524915]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1349782860]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1037524915]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,18 +15,37 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="Control" unique_id=716645308]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control" unique_id=1246488643]
+z_index = -1
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -28.0
-offset_top = -15.5
-offset_right = 28.0
-offset_bottom = 15.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "START"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control" unique_id=1069693719]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_sa3yf")
+stretch_mode = 5
+
+[node name="Button" type="Button" parent="CanvasLayer/Control" unique_id=716645308]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73600006
+anchor_top = 0.5
+anchor_right = 0.901
+anchor_bottom = 0.595
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0.3771623, 0.37716258, 0.37716332, 1)
+theme_override_font_sizes/font_size = 42
+text = "Start."
+flat = true
 script = ExtResource("1_fgkus")
