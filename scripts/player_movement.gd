@@ -163,51 +163,53 @@ func _physics_process(delta: float) -> void:
 					)
 				
 	# scrapped cuz its annoying to debug
-	## ledge grabbing: (I need to plan this out since I dunno how to visualize this)
-	## uh so basically horiz. raycast in char direction + raycast offet in direction facing down
-	## if raycasts are the some collision = distance < certian param jump is overriden and player
-	## smoothly moves/"clips" corner without losing momentum
-	## NOTE: player cannot grab onto ledges greater than raycast offset
-	#if Input.is_action_pressed("jump") and not ledge_check:
-		#ledge_check = true
-		#var space_state = get_world_2d().direct_space_state
-		#var origin = global_position + Vector2(last_dir * 32, 48) # bottom-ish left corner
-		#
-		#var offset_pos = origin + Vector2(last_dir * 64, 0)
-		#var horiz_query = PhysicsRayQueryParameters2D.create(origin, offset_pos)
-		#horiz_query.exclude = [self]
-		#var horiz_result = space_state.intersect_ray(horiz_query)
-		#var down_query = PhysicsRayQueryParameters2D.create(offset_pos + Vector2(0, -129), offset_pos + Vector2(0, 32))
-		#var down_result = space_state.intersect_ray(down_query)
-		#var air_query = PhysicsPointQueryParameters2D.new()
-		#air_query.position = offset_pos + Vector2(0, -180)
-		#var air_result = space_state.intersect_point(air_query)
-		#
+	# ledge grabbing: (I need to plan this out since I dunno how to visualize this)
+	# uh so basically horiz. raycast in char direction + raycast offet in direction facing down
+	# if raycasts are the some collision = distance < certian param jump is overriden and player
+	# smoothly moves/"clips" corner without losing momentum
+	# NOTE: player cannot grab onto ledges greater than raycast offset
+	if Input.is_action_pressed("jump") and not ledge_check:
+		ledge_check = true
+		var space_state = get_world_2d().direct_space_state
+		var origin = global_position + Vector2(last_dir * 32, 48) # bottom-ish left corner
+		
+		var offset_pos = origin + Vector2(last_dir * 64, 0)
+		var horiz_query = PhysicsRayQueryParameters2D.create(origin, offset_pos)
+		horiz_query.exclude = [self]
+		var horiz_result = space_state.intersect_ray(horiz_query)
+		var down_query = PhysicsRayQueryParameters2D.create(offset_pos + Vector2(0, -129), offset_pos + Vector2(0, 32))
+		var down_result = space_state.intersect_ray(down_query)
+		var air_query = PhysicsPointQueryParameters2D.new()
+		air_query.position = offset_pos + Vector2(0, -129)
+		var air_result = space_state.intersect_point(air_query)
+		# debug_point(offset_pos + Vector2(0, -129), Color(0.0, 0.651, 0.604, 1.0))
+		# print(air_result)
 		# get_tree().create_timer(randf(0.005, 0.06)).timeout.connect(func():)
 		#debug_point(origin, Color(0.0, 0.651, 0.604, 1.0))
 		#debug_point(offset_pos, Color(0.0, 0.651, 0.604, 1.0))
-		# debug_point(offset_pos + Vector2(0, -180), Color(1.0, 0.208, 0.604, 1.0))
+		#debug_point(offset_pos + Vector2(0, -180), Color(1.0, 0.208, 0.604, 1.0))
 		#debug_point(offset_pos + Vector2(0, -132), Color(1.0, 0.208, 0.604, 1.0))
 		#debug_point(offset_pos + Vector2(0, 32), Color(1.0, 0.208, 0.604, 1.0))
-		#if horiz_result and down_result and (not air_result) and (not grab_ledge):
-			#grab_ledge = true
-			#var target_pos = down_result.position - Vector2(0, 64)
+		if horiz_result and down_result and (not air_result) and (not grab_ledge):
+			var target_pos = down_result.position - Vector2(0, 64)
+			grab_ledge = true
+			
 			#debug_point(target_pos )
 			#debug_point(horiz_result.position, Color(0.722, 0.526, 0.0, 1.0))
-#
-			#var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
-			#tween.tween_property(self, "global_position", target_pos, 0.15)
-			#collision_layer = 0
-			#collision_mask = 0
-			#tween.play()
-			#tween.finished.connect(func():
-				#collision_layer = 1
-				#collision_mask = 1
-				#grab_ledge = false
-			#)
-		#get_tree().create_timer(0.1).timeout.connect(func():
-			#ledge_check = false
-		#)
+
+			var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
+			tween.tween_property(self, "global_position", target_pos, 0.21)
+			collision_layer = 0
+			collision_mask = 0
+			tween.play()
+			tween.finished.connect(func():
+				collision_layer = 1
+				collision_mask = 1
+				grab_ledge = false
+			)
+		get_tree().create_timer(0.1).timeout.connect(func():
+			ledge_check = false
+		)
 	
 	if Input.is_action_just_released("down"):
 		slide_slam_stop = false
