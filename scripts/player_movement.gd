@@ -22,7 +22,7 @@ var dashes: int = 0
 const MAX_DASHES: int = 1
 const DASH_VEL: float  = 2750
 var dash_cd = false
-const DASH_TIME: float  = 0.75
+const DASH_TIME: float  = 0.5
 
 
 var direction: float = 0
@@ -44,7 +44,7 @@ var ledge_check = false
 
 const SLIDE_VEL = 3000
 var slide_cd = false
-const Slide_TIME: float  = 0.7
+const Slide_TIME: float  = 0.6
 var selected_item: Area2D
 var slide_slam_stop = false
 
@@ -79,7 +79,11 @@ func find_tick():
 	var closest_dist = 9999
 	for col in cols:
 		if col.is_in_group("item"):
-			if (col.position - position).length() < closest_dist:
+			var space_state = get_world_2d().direct_space_state
+			var horiz_query = PhysicsRayQueryParameters2D.create(global_position, col.global_position)
+			horiz_query.exclude = [self]
+			var horiz_result = space_state.intersect_ray(horiz_query)
+			if not horiz_result and (col.position - position).length() < closest_dist:
 				closest_dist = (col.position - position).length()
 				closest_col = col
 	if closest_col:
@@ -281,6 +285,13 @@ func _physics_process(delta: float) -> void:
 			slide_slam_stop = true
 			has_dash_mom = true
 			velocity.x = direction * SLIDE_VEL
+			velocity.y = 1000
+			$CollisionShape2D.shape.radius = 24.0
+			$CollisionShape2D.shape.height = 48.0
+			get_tree().create_timer(0.4).timeout.connect(func():
+				$CollisionShape2D.shape.radius = 48.0
+				$CollisionShape2D.shape.height = 128.0
+			)
 			get_tree().create_timer(0.35).timeout.connect(func():
 				has_dash_mom = false
 			)
