@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://bwa44mqqlcjrc" path="res://scripts/player_movement.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bpvbvjlqr4ym0" path="res://scenes/select.gd" id="2_u5sy4"]
 [ext_resource type="Texture2D" uid="uid://bkch85xeq0d2s" path="res://assets/images/icon.svg" id="2_yqjtg"]
-[ext_resource type="Texture2D" uid="uid://dwvkg1ed8dxbd" path="res://assets/images/placeholder.png" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://b2yocptfor0lo" path="res://assets/nodes/item.tscn" id="4_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://dfh1g4g1f8ts7" path="res://assets/images/items_spritesheet.png" id="5_iywne"]
+[ext_resource type="Texture2D" uid="uid://vxv1025xior5" path="res://assets/images/terrain-tileset.png" id="6_kvuet"]
 [ext_resource type="Texture2D" uid="uid://c8mccqmns3yh7" path="res://assets/images/truck.png" id="8_0tnpc"]
 [ext_resource type="Script" uid="uid://cvr8s0enst0qp" path="res://scripts/gui.gd" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://bdn451he14u76" path="res://assets/nodes/cash.tscn" id="8_kvpfn"]
@@ -58,6 +58,14 @@ radius = 64.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6sj1v"]
 size = Vector2(128, 128)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
+atlas = ExtResource("6_kvuet")
+region = Rect2(128, 0, 128, 129)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trtic"]
+atlas = ExtResource("6_kvuet")
+region = Rect2(0, 128, 128, 128)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_iywne"]
 atlas = ExtResource("5_iywne")
 region = Rect2(0, 0, 128, 128)
@@ -93,7 +101,7 @@ script = ExtResource("2_u5sy4")
 [node name="Character" type="CharacterBody2D" parent="Node2D" unique_id=296477326 node_paths=PackedStringArray("select", "debris")]
 unique_name_in_owner = true
 z_index = 1
-position = Vector2(192, -192)
+position = Vector2(704, -256)
 script = ExtResource("1_uwrxv")
 select = NodePath("../Select")
 debris = NodePath("../Debris")
@@ -127,71 +135,38 @@ wait_time = 0.05
 autostart = true
 
 [node name="Camera2D" type="Camera2D" parent="Node2D" unique_id=1661264767]
-position = Vector2(192, -192)
+position = Vector2(704, -256)
 zoom = Vector2(0.5, 0.5)
 
 [node name="Terrain" type="Node2D" parent="Node2D" unique_id=691036309]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Node2D/Terrain" unique_id=700055049]
+[node name="Floor" type="StaticBody2D" parent="Node2D/Terrain" unique_id=700055049]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D" unique_id=544337289]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Floor" unique_id=544337289]
 shape = SubResource("WorldBoundaryShape2D_6sj1v")
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1564751344]
-position = Vector2(-576, -448)
+[node name="Wall" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1564751344]
+position = Vector2(-32, -576)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D2" unique_id=390168323]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Wall" unique_id=390168323]
 shape = SubResource("RectangleShape2D_6sj1v")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D2" unique_id=1573095851]
-texture = ExtResource("3_lnu2h")
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Wall" unique_id=1573095851]
+texture = SubResource("AtlasTexture_kvuet")
 
-[node name="StaticBody2D3" type="StaticBody2D" parent="Node2D/Terrain" unique_id=390028746]
-position = Vector2(-1728, -64)
+[node name="Glass" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1491250019 groups=["glass"]]
+position = Vector2(-32, -192)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D3" unique_id=639271634]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Glass" unique_id=547512376]
 shape = SubResource("RectangleShape2D_6sj1v")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D3" unique_id=142611040]
-texture = ExtResource("3_lnu2h")
-
-[node name="StaticBody2D4" type="StaticBody2D" parent="Node2D/Terrain" unique_id=909578158]
-position = Vector2(-1104, -320)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D4" unique_id=29915869]
-shape = SubResource("RectangleShape2D_6sj1v")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D4" unique_id=1140275936]
-texture = ExtResource("3_lnu2h")
-
-[node name="StaticBody2D5" type="StaticBody2D" parent="Node2D/Terrain" unique_id=925925572]
-position = Vector2(-1088, -448)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D5" unique_id=1700319183]
-shape = SubResource("RectangleShape2D_6sj1v")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D5" unique_id=1240586740]
-texture = ExtResource("3_lnu2h")
-
-[node name="StaticBody2D6" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1730338278]
-position = Vector2(-2192, -368)
-scale = Vector2(0.31962627, 7.599696)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D6" unique_id=1838612583]
-shape = SubResource("RectangleShape2D_6sj1v")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D6" unique_id=1026543789]
-texture = ExtResource("3_lnu2h")
-
-[node name="StaticBody2D7" type="StaticBody2D" parent="Node2D/Terrain" unique_id=679654204]
-position = Vector2(-1792, -752)
-scale = Vector2(0.31962627, 7.599696)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/StaticBody2D7" unique_id=572936957]
-shape = SubResource("RectangleShape2D_6sj1v")
-
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/StaticBody2D7" unique_id=2037126714]
-texture = ExtResource("3_lnu2h")
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Glass" unique_id=581655170]
+modulate = Color(1, 1, 1, 0.56078434)
+texture = SubResource("AtlasTexture_trtic")
 
 [node name="Item" parent="Node2D" unique_id=1422025864 instance=ExtResource("4_lbhrr")]
 position = Vector2(-320, -64)
@@ -233,7 +208,7 @@ texture = ExtResource("9_vtaks")
 script = ExtResource("12_kvuet")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/Controls" unique_id=926961293]
-position = Vector2(192, -32)
+position = Vector2(704, -32)
 shape = SubResource("RectangleShape2D_8tn5n")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
