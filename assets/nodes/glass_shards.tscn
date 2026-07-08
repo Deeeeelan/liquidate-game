@@ -31,8 +31,10 @@ scale_over_velocity_max = 130.59999
 color_ramp = SubResource("GradientTexture1D_8hr85")
 
 [node name="GlassShards" type="GPUParticles2D" unique_id=1450153350]
+emitting = false
 amount = 16
 texture = ExtResource("1_6kmsd")
 lifetime = 3.0
+one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_8rfbt")
