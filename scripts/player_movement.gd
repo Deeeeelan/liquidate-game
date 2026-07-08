@@ -13,7 +13,7 @@ var current_speed: float = 0.0
 var curr_accel: float = 0.0
 const ACCELERATION: float = 0.2
 
-const BASE_JUMP: float = -600.0
+const BASE_JUMP: float = -670.0
 const LERP_SPEED: float = 0.08
 var jumps: int = 0
 const MAX_JUMPS: int = 2
@@ -65,7 +65,7 @@ func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
 
 func process_jump_y(j_add: bool):
 	if j_add: jumps += 1
-	velocity.y = min(BASE_JUMP, velocity.y + BASE_JUMP)
+	velocity.y = max(min(BASE_JUMP, velocity.y + BASE_JUMP), -1200)
 	
 	get_tree().create_timer(0.1).timeout.connect(func():
 		jmp_debounce = false
@@ -108,7 +108,7 @@ func _input(event: InputEvent) -> void:
 			items.clear()
 			GameManager.score += total
 			%Score.label_settings.font_color = Color(0.0, 1.0, 0.0, 1.0)
-			%CashSFX.play()
+			%CashSFX.get_stream_playback().play_stream(CASH_REGISTER)
 			var tween = get_tree().create_tween()
 			tween.tween_property(%Score.label_settings, "font_color", Color(0.0, 0.0, 0.0, 1.0), 1)
 			tween.play()
@@ -324,7 +324,12 @@ func _physics_process(delta: float) -> void:
 		dash_cd = true
 		velocity.x = last_dir * DASH_VEL
 		has_dash_mom = true
-		
+		$CollisionShape2D.shape.radius = 24.0
+		$CollisionShape2D.shape.height = 48.0
+		get_tree().create_timer(0.4).timeout.connect(func():
+			$CollisionShape2D.shape.radius = 48.0
+			$CollisionShape2D.shape.height = 128.0
+		)
 		var dash_parti = DASH.instantiate()
 		dash_parti.position = position
 		dash_parti.scale = Vector2(-last_dir , 1)

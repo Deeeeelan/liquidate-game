@@ -10,3 +10,4 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	$VBoxContainer/Score.text = "$" + str(GameManager.score)
 	$VBoxContainer/Timer.text = str(GameManager.time_left / 60) + ":" +  ("0" if GameManager.time_left % 60 <= 9 else "") + str(GameManager.time_left % 60)
+	$ItemText.text = str(len(%Character.items)) + "/" + str(%Character.max_items) + " Items"
