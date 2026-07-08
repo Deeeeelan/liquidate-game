@@ -46,6 +46,7 @@ const SLIDE_VEL = 3000
 var slide_cd = false
 const Slide_TIME: float  = 0.7
 var selected_item: Area2D
+var slide_slam_stop = false
 
 const GRAVITY_MULT: float = 1.5
 
@@ -174,10 +175,11 @@ func _physics_process(delta: float) -> void:
 		get_tree().create_timer(0.1).timeout.connect(func():
 			ledge_check = false
 		)
-
+	if Input.is_action_just_released("down"):
+		slide_slam_stop = false
 	# floor conditions, coyote, gravity, and slam
 	if not is_on_floor(): #TODO: add slam particles
-		if Input.is_action_pressed("down"):
+		if Input.is_action_pressed("down") and not slide_slam_stop:
 			can_slam = true
 			velocity += (get_gravity() * GRAVITY_MULT * SLAM_GRAV_MULT) * delta
 		else:
@@ -246,6 +248,7 @@ func _physics_process(delta: float) -> void:
 			
 		if is_on_floor() and Input.is_action_pressed("down") and not slide_cd:
 			slide_cd = true
+			slide_slam_stop = true
 			velocity.x = direction * SLIDE_VEL
 			get_tree().create_timer(Slide_TIME).timeout.connect(func():
 				slide_cd = false
