@@ -15,12 +15,14 @@
 [ext_resource type="PackedScene" uid="uid://bdn451he14u76" path="res://assets/nodes/cash.tscn" id="8_kvpfn"]
 [ext_resource type="Texture2D" uid="uid://dg2jn3r4sb025" path="res://assets/images/background.png" id="9_ca42v"]
 [ext_resource type="Texture2D" uid="uid://cl0jrf66m5f27" path="res://assets/images/ground_outside.png" id="9_vtaks"]
+[ext_resource type="Texture2D" uid="uid://dnq2uvecpkx8u" path="res://assets/images/truck2.png" id="10_bhx41"]
 [ext_resource type="Texture2D" uid="uid://du3q4pw77nq2f" path="res://assets/images/tutorials/tut_movement.png" id="10_ir15t"]
 [ext_resource type="Texture2D" uid="uid://byacdnmove3dc" path="res://assets/images/tutorials/enter.png" id="11_ca42v"]
 [ext_resource type="Script" uid="uid://by1e1vtionn6g" path="res://scripts/tutorial.gd" id="12_kvuet"]
 [ext_resource type="Texture2D" uid="uid://d2sevv5ucs4wr" path="res://assets/images/tutorials/tut_dash.png" id="13_264po"]
 [ext_resource type="Texture2D" uid="uid://buq0ib0oaoup8" path="res://assets/images/tutorials/grab.png" id="14_5newe"]
 [ext_resource type="Texture2D" uid="uid://mc360gh7lp3m" path="res://assets/images/tutorials/down.png" id="15_bt5mj"]
+[ext_resource type="Script" uid="uid://d15uatk6cjfj" path="res://scripts/start_game.gd" id="17_qnb83"]
 [ext_resource type="Script" uid="uid://bqcsay8bgdrqu" path="res://scripts/control_anim.gd" id="18_1kice"]
 [ext_resource type="AudioStream" uid="uid://b336qrt87h62g" path="res://assets/audio/glass-breaking.mp3" id="18_ssvqc"]
 [ext_resource type="Script" uid="uid://brqlwx61o1kvh" path="res://scripts/timer.gd" id="23_pl11u"]
@@ -235,6 +237,10 @@ region = Rect2(384, 0, 128, 128)
 [sub_resource type="AtlasTexture" id="AtlasTexture_bt5mj"]
 atlas = ExtResource("5_iywne")
 region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4re6"]
+atlas = ExtResource("5_iywne")
+region = Rect2(512, 128, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e1j6l"]
 atlas = ExtResource("5_iywne")
@@ -1274,6 +1280,11 @@ texture = ExtResource("8_0tnpc")
 position = Vector2(-158.5, 2.5)
 shape = SubResource("RectangleShape2D_vtaks")
 
+[node name="TruckShow" type="Sprite2D" parent="Node2D/Truck" unique_id=835415063]
+unique_name_in_owner = true
+visible = false
+texture = ExtResource("10_bhx41")
+
 [node name="FloorPara" type="Parallax2D" parent="Node2D" unique_id=670803365]
 scroll_offset = Vector2(0, 384)
 repeat_size = Vector2(512, 0)
@@ -1320,6 +1331,14 @@ texture = ExtResource("13_264po")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/dash" unique_id=409141157]
 shape = SubResource("RectangleShape2D_8tn5n")
 
+[node name="StartGame" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=953647101]
+position = Vector2(-112, -240)
+scale = Vector2(0.39131862, 6.4851394)
+script = ExtResource("17_qnb83")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/StartGame" unique_id=1240744093]
+shape = SubResource("RectangleShape2D_8tn5n")
+
 [node name="slide" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=982649078]
 position = Vector2(-8960, -1840.0001)
 scale = Vector2(0.39131862, 6.4851394)
@@ -1354,6 +1373,26 @@ sprite = SubResource("AtlasTexture_37s47")
 position = Vector2(-6848, -1280)
 value = 100000
 sprite = SubResource("AtlasTexture_bt5mj")
+
+[node name="Board2" parent="Node2D/Items" unique_id=2033526883 instance=ExtResource("4_lbhrr")]
+position = Vector2(-17728, -64)
+value = 100000
+sprite = SubResource("AtlasTexture_bt5mj")
+
+[node name="Stock" parent="Node2D/Items" unique_id=1686356136 instance=ExtResource("4_lbhrr")]
+position = Vector2(-17472, -2880)
+value = 250000
+sprite = SubResource("AtlasTexture_i4re6")
+
+[node name="Stock2" parent="Node2D/Items" unique_id=1354284524 instance=ExtResource("4_lbhrr")]
+position = Vector2(-17216, -4544)
+value = 250000
+sprite = SubResource("AtlasTexture_i4re6")
+
+[node name="Stock3" parent="Node2D/Items" unique_id=945042371 instance=ExtResource("4_lbhrr")]
+position = Vector2(-9472, -4208)
+value = 250000
+sprite = SubResource("AtlasTexture_i4re6")
 
 [node name="Box" parent="Node2D/Items" unique_id=1553741919 instance=ExtResource("4_lbhrr")]
 position = Vector2(-10048, -2336)
@@ -1502,7 +1541,28 @@ position = Vector2(-11584, -4544)
 position = Vector2(-15360, -4608)
 
 [node name="BigMoney" parent="Node2D/Items/Instant" unique_id=1068223728 instance=ExtResource("8_kvpfn")]
-position = Vector2(-13616, -5264)
+position = Vector2(-17056, -3520)
+value = 100000
+sprite = SubResource("AtlasTexture_rm0al")
+
+[node name="BigMoney2" parent="Node2D/Items/Instant" unique_id=994365492 instance=ExtResource("8_kvpfn")]
+position = Vector2(-12480, -2528)
+value = 100000
+sprite = SubResource("AtlasTexture_rm0al")
+
+[node name="BigMoney3" parent="Node2D/Items/Instant" unique_id=742219625 instance=ExtResource("8_kvpfn")]
+position = Vector2(-6656, -2624)
+value = 100000
+sprite = SubResource("AtlasTexture_rm0al")
+
+[node name="BigMoney4" parent="Node2D/Items/Instant" unique_id=672838848 instance=ExtResource("8_kvpfn")]
+position = Vector2(-13888, -2368)
+value = 100000
+sprite = SubResource("AtlasTexture_rm0al")
+
+[node name="BigMoney5" parent="Node2D/Items/Instant" unique_id=2036810316 instance=ExtResource("8_kvpfn")]
+position = Vector2(-18944, -64)
+value = 100000
 sprite = SubResource("AtlasTexture_rm0al")
 
 [node name="Cash19" parent="Node2D/Items/Instant" unique_id=519146143 instance=ExtResource("8_kvpfn")]
