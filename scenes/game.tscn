@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b11a736y5det2" path="res://scripts/game_script.gd" id="1_dinhu"]
 [ext_resource type="Texture2D" uid="uid://cnfq0b0wtw103" path="res://assets/images/select-Sheet.png" id="1_p57ef"]
 [ext_resource type="Script" uid="uid://bwa44mqqlcjrc" path="res://scripts/player_movement.gd" id="1_uwrxv"]
-[ext_resource type="Script" uid="uid://bpvbvjlqr4ym0" path="res://scenes/select.gd" id="2_u5sy4"]
+[ext_resource type="Script" uid="uid://bpvbvjlqr4ym0" path="res://scripts/select.gd" id="2_u5sy4"]
 [ext_resource type="Texture2D" uid="uid://bkch85xeq0d2s" path="res://assets/images/icon.svg" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://b2yocptfor0lo" path="res://assets/nodes/item.tscn" id="4_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://dfh1g4g1f8ts7" path="res://assets/images/items_spritesheet.png" id="5_iywne"]
@@ -15,8 +15,12 @@
 [ext_resource type="Texture2D" uid="uid://cl0jrf66m5f27" path="res://assets/images/ground_outside.png" id="9_vtaks"]
 [ext_resource type="Texture2D" uid="uid://du3q4pw77nq2f" path="res://assets/images/tutorials/tut_movement.png" id="10_ir15t"]
 [ext_resource type="Texture2D" uid="uid://byacdnmove3dc" path="res://assets/images/tutorials/enter.png" id="11_ca42v"]
-[ext_resource type="Script" uid="uid://by1e1vtionn6g" path="res://scenes/tutorial.gd" id="12_kvuet"]
+[ext_resource type="Script" uid="uid://by1e1vtionn6g" path="res://scripts/tutorial.gd" id="12_kvuet"]
+[ext_resource type="Texture2D" uid="uid://d2sevv5ucs4wr" path="res://assets/images/tutorials/tut_dash.png" id="13_264po"]
+[ext_resource type="Texture2D" uid="uid://buq0ib0oaoup8" path="res://assets/images/tutorials/grab.png" id="14_5newe"]
 [ext_resource type="AudioStream" uid="uid://tlc13f58asnv" path="res://assets/audio/cash-register.mp3" id="17_rysoc"]
+[ext_resource type="Script" uid="uid://bqcsay8bgdrqu" path="res://scripts/control_anim.gd" id="18_1kice"]
+[ext_resource type="AudioStream" uid="uid://b336qrt87h62g" path="res://assets/audio/glass-breaking.mp3" id="18_ssvqc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
 atlas = ExtResource("1_p57ef")
@@ -64,7 +68,11 @@ size = Vector2(128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
 atlas = ExtResource("6_kvuet")
-region = Rect2(128, 0, 128, 129)
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1kice"]
+atlas = ExtResource("6_kvuet")
+region = Rect2(384, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_trtic"]
 atlas = ExtResource("6_kvuet")
@@ -76,9 +84,13 @@ size = Vector2(669, 389)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8tn5n"]
 size = Vector2(458, 74)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_5newe"]
+atlas = ExtResource("5_iywne")
+region = Rect2(128, 0, 128, 128)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_iywne"]
 atlas = ExtResource("5_iywne")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(256, 0, 128, 128)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kvpfn"]
 load_path = "res://.godot/imported/tut_movement.png-e6127774a1c4c2b49bf36d084b2674da.ctex"
@@ -110,7 +122,7 @@ script = ExtResource("2_u5sy4")
 [node name="Character" type="CharacterBody2D" parent="Node2D" unique_id=296477326 node_paths=PackedStringArray("select", "debris")]
 unique_name_in_owner = true
 z_index = 1
-position = Vector2(704, -256)
+position = Vector2(1424, -253)
 script = ExtResource("1_uwrxv")
 select = NodePath("../Select")
 debris = NodePath("../Debris")
@@ -144,36 +156,431 @@ wait_time = 0.05
 autostart = true
 
 [node name="Camera2D" type="Camera2D" parent="Node2D" unique_id=1661264767]
-position = Vector2(704, -256)
+position = Vector2(1424, -253)
 zoom = Vector2(0.5, 0.5)
 
 [node name="Terrain" type="Node2D" parent="Node2D" unique_id=691036309]
 
-[node name="Floor" type="StaticBody2D" parent="Node2D/Terrain" unique_id=700055049]
+[node name="FirstRoom" type="Node2D" parent="Node2D/Terrain" unique_id=1810640901]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Floor" unique_id=544337289]
+[node name="Floor" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=700055049]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Floor" unique_id=544337289]
 shape = SubResource("WorldBoundaryShape2D_6sj1v")
 
-[node name="Wall" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1564751344]
+[node name="Wall" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=1564751344]
 position = Vector2(-32, -576)
 rotation = 1.5707964
 scale = Vector2(3, 0.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Wall" unique_id=390168323]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Wall" unique_id=390168323]
 shape = SubResource("RectangleShape2D_6sj1v")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Wall" unique_id=1573095851]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Wall" unique_id=1573095851]
 texture = SubResource("AtlasTexture_kvuet")
 
-[node name="Glass" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1491250019 groups=["glass"]]
+[node name="Wall3" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=1262329616]
+position = Vector2(-832.00006, -736)
+rotation = -3.1415925
+scale = Vector2(12, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Wall3" unique_id=677390386]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Wall3" unique_id=1516175553]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall4" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=484540039]
+position = Vector2(-2368, -736)
+rotation = -3.1415925
+scale = Vector2(12, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Wall4" unique_id=783363669]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Wall4" unique_id=94271316]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall6" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=1356173397]
+position = Vector2(-2432, -64)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Wall6" unique_id=737238778]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Wall6" unique_id=2095421582]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall7" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=1878624170]
+position = Vector2(-2624, -128)
+rotation = -3.1415925
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Wall7" unique_id=1904357176]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Wall7" unique_id=700520468]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall2" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=723227451]
+position = Vector2(-32, -1792)
+rotation = 1.5707964
+scale = Vector2(16, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Wall2" unique_id=492672456]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Wall2" unique_id=559355805]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Glass" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=1491250019 groups=["glass"]]
 position = Vector2(-32, -192)
 rotation = 1.5707964
 scale = Vector2(3, 0.5)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Glass" unique_id=547512376]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Glass" unique_id=547512376]
 shape = SubResource("RectangleShape2D_6sj1v")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Glass" unique_id=581655170]
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Glass" unique_id=581655170]
+modulate = Color(1, 1, 1, 0.56078434)
+texture = SubResource("AtlasTexture_trtic")
+
+[node name="Wall5" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=1320322874]
+position = Vector2(-3168, -576)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Wall5" unique_id=75513304]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Wall5" unique_id=1676255626]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Glass3" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=2074165584 groups=["glass"]]
+position = Vector2(-3168, -192)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Glass3" unique_id=1170853543]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Glass3" unique_id=191410676]
+modulate = Color(1, 1, 1, 0.56078434)
+texture = SubResource("AtlasTexture_trtic")
+
+[node name="Glass2" type="StaticBody2D" parent="Node2D/Terrain/FirstRoom" unique_id=1131717497 groups=["glass"]]
+position = Vector2(-32, -3008)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/FirstRoom/Glass2" unique_id=1597683960]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/FirstRoom/Glass2" unique_id=1700380184]
+modulate = Color(1, 1, 1, 0.56078434)
+texture = SubResource("AtlasTexture_trtic")
+
+[node name="Room2" type="Node2D" parent="Node2D/Terrain" unique_id=960068198]
+
+[node name="Wall8" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=1601154608]
+position = Vector2(-3968, -736)
+rotation = -3.1415925
+scale = Vector2(12, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall8" unique_id=169411544]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall8" unique_id=1532589873]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall9" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=1750898056]
+position = Vector2(-5504, -736)
+rotation = -3.1415925
+scale = Vector2(12, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall9" unique_id=423048157]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall9" unique_id=761560977]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall10" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=478208176]
+position = Vector2(-5568, -64)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall10" unique_id=1074093840]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall10" unique_id=842081975]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall11" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=533639171]
+position = Vector2(-5760, -128)
+rotation = -3.1415925
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall11" unique_id=1317524696]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall11" unique_id=1232076661]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall13" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=1976810110]
+position = Vector2(-3840, -125)
+rotation = -3.1415925
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall13" unique_id=986117341]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall13" unique_id=1924324472]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall14" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=793466604]
+position = Vector2(-5888, -576)
+rotation = -3.1415925
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall14" unique_id=1537056673]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall14" unique_id=1691232224]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall12" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=931597674]
+position = Vector2(-6304, -576)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall12" unique_id=1962638613]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall12" unique_id=968932355]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall2" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=574868103]
+position = Vector2(-6304, -1792)
+rotation = 1.5707964
+scale = Vector2(16, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Wall2" unique_id=452139352]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Wall2" unique_id=593781731]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Glass4" type="StaticBody2D" parent="Node2D/Terrain/Room2" unique_id=1701706805 groups=["glass"]]
+position = Vector2(-6304, -192)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room2/Glass4" unique_id=199172336]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room2/Glass4" unique_id=677553503]
+modulate = Color(1, 1, 1, 0.56078434)
+texture = SubResource("AtlasTexture_trtic")
+
+[node name="Room3" type="Node2D" parent="Node2D/Terrain" unique_id=248216196]
+position = Vector2(-3136, 0)
+
+[node name="Wall10" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=115466500]
+position = Vector2(-5568, -64)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall10" unique_id=1657153558]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall10" unique_id=725455900]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall12" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=603977652]
+position = Vector2(-5760, -1088)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall12" unique_id=1272657764]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall12" unique_id=117648865]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall14" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=636012285]
+position = Vector2(-5632, -1088)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall14" unique_id=1692532925]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall14" unique_id=114779266]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall16" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=2089935141]
+position = Vector2(-5888, -1088)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall16" unique_id=946358450]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall16" unique_id=1976906538]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall17" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=1612130315]
+position = Vector2(-6208, -704)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall17" unique_id=1194821627]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall17" unique_id=1967521083]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall18" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=1990695882]
+position = Vector2(-6016, -448)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall18" unique_id=1084681683]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall18" unique_id=442784649]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall19" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=113768863]
+position = Vector2(-6272, -1088)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall19" unique_id=1292740077]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall19" unique_id=2034681534]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall15" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=81483087]
+position = Vector2(-4992, -1472)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall15" unique_id=305246162]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall15" unique_id=1365804458]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall20" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=849625438]
+position = Vector2(-4864, -1600)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall20" unique_id=466109669]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall20" unique_id=866267988]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall21" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=145656646]
+position = Vector2(-4736, -1728)
+rotation = -3.1415925
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall21" unique_id=2029946431]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall21" unique_id=311873232]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall11" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=1120984611]
+position = Vector2(-5760, -128)
+rotation = -3.1415925
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall11" unique_id=2007239187]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall11" unique_id=1395012050]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall13" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=1519180513]
+position = Vector2(-3840, -125)
+rotation = -3.1415925
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall13" unique_id=787222978]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall13" unique_id=1527447635]
+texture = SubResource("AtlasTexture_1kice")
+
+[node name="Wall2" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=2043640816]
+position = Vector2(-6304, -1024)
+rotation = 1.5707964
+scale = Vector2(16, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall2" unique_id=518670410]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall2" unique_id=667427259]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall3" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=302701198]
+position = Vector2(-5152, -512)
+rotation = 1.5707964
+scale = Vector2(8, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall3" unique_id=906368773]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall3" unique_id=762056866]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall6" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=1896287908]
+position = Vector2(-5824, -1568)
+scale = Vector2(8, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall6" unique_id=434881338]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall6" unique_id=1911156915]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall5" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=1386959257]
+position = Vector2(-4640, -1792)
+rotation = 1.5707964
+scale = Vector2(8, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall5" unique_id=2051480373]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall5" unique_id=1122743560]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Wall4" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=899700441]
+position = Vector2(-4640, -768)
+rotation = 1.5707964
+scale = Vector2(8, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Wall4" unique_id=1237269089]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Wall4" unique_id=925994596]
+texture = SubResource("AtlasTexture_kvuet")
+
+[node name="Glass5" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=662415499 groups=["glass"]]
+position = Vector2(-4640, -2496)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Glass5" unique_id=1385223817]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Glass5" unique_id=1293917735]
+modulate = Color(1, 1, 1, 0.56078434)
+texture = SubResource("AtlasTexture_trtic")
+
+[node name="Glass6" type="StaticBody2D" parent="Node2D/Terrain/Room3" unique_id=1534662206 groups=["glass"]]
+position = Vector2(-6304, -2239.9998)
+rotation = 1.5707964
+scale = Vector2(3, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/Room3/Glass6" unique_id=1956336834]
+shape = SubResource("RectangleShape2D_6sj1v")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Room3/Glass6" unique_id=1288282486]
 modulate = Color(1, 1, 1, 0.56078434)
 texture = SubResource("AtlasTexture_trtic")
 
@@ -202,6 +609,7 @@ texture = ExtResource("9_vtaks")
 
 [node name="BGPara" type="Parallax2D" parent="Node2D" unique_id=389048964]
 z_index = -2
+scroll_offset = Vector2(0, 64)
 repeat_size = Vector2(128, 128)
 repeat_times = 45
 
@@ -211,6 +619,7 @@ texture = ExtResource("9_ca42v")
 [node name="TutorialTriggers" type="Node2D" parent="Node2D" unique_id=8833584]
 
 [node name="Controls" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=16930842]
+position = Vector2(720, 32)
 script = ExtResource("12_kvuet")
 texture = ExtResource("10_ir15t")
 
@@ -219,7 +628,7 @@ position = Vector2(704, -32)
 shape = SubResource("RectangleShape2D_8tn5n")
 
 [node name="enter" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=1741836864]
-position = Vector2(208, -240)
+position = Vector2(272, -240)
 scale = Vector2(0.39131862, 6.4851394)
 script = ExtResource("12_kvuet")
 texture = ExtResource("11_ca42v")
@@ -227,18 +636,38 @@ texture = ExtResource("11_ca42v")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/enter" unique_id=1877708557]
 shape = SubResource("RectangleShape2D_8tn5n")
 
+[node name="dash" type="Area2D" parent="Node2D/TutorialTriggers" unique_id=1639064781]
+position = Vector2(-208, -240)
+scale = Vector2(0.39131862, 6.4851394)
+script = ExtResource("12_kvuet")
+texture = ExtResource("13_264po")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/dash" unique_id=409141157]
+shape = SubResource("RectangleShape2D_8tn5n")
+
+[node name="Grab" type="Sprite2D" parent="Node2D/TutorialTriggers" unique_id=1558411636]
+position = Vector2(-4304, -208)
+texture = ExtResource("14_5newe")
+
 [node name="Items" type="Node2D" parent="Node2D" unique_id=643897567]
 
-[node name="Item" parent="Node2D/Items" unique_id=1422025864 instance=ExtResource("4_lbhrr")]
-position = Vector2(-320, -64)
+[node name="Vase" parent="Node2D/Items" unique_id=1422025864 instance=ExtResource("4_lbhrr")]
+position = Vector2(-4160, -64)
+value = 50000
+sprite = SubResource("AtlasTexture_5newe")
+
+[node name="Paint" parent="Node2D/Items" unique_id=795518759 instance=ExtResource("4_lbhrr")]
+position = Vector2(-5184, -317)
+value = 100000
 sprite = SubResource("AtlasTexture_iywne")
 
-[node name="Cash" parent="Node2D/Items" unique_id=805602659 instance=ExtResource("8_kvpfn")]
-position = Vector2(-832, -64)
+[node name="Instant" type="Node2D" parent="Node2D/Items" unique_id=1957227314]
 
-[node name="Item2" parent="Node2D/Items" unique_id=889268876 instance=ExtResource("4_lbhrr")]
-position = Vector2(1200, -192)
-sprite = SubResource("AtlasTexture_iywne")
+[node name="Cash" parent="Node2D/Items/Instant" unique_id=805602659 instance=ExtResource("8_kvpfn")]
+position = Vector2(-1792, -189)
+
+[node name="Cash2" parent="Node2D/Items/Instant" unique_id=1822377171 instance=ExtResource("8_kvpfn")]
+position = Vector2(-2048, -192)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
 
@@ -269,10 +698,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
 texture = SubResource("CompressedTexture2D_kvpfn")
 expand_mode = 1
 stretch_mode = 5
+script = ExtResource("18_1kice")
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Control/Tutorial/ControlTex" unique_id=1249883860]
+wait_time = 0.65
+autostart = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=911815911]
 layout_mode = 1
@@ -317,4 +752,9 @@ autostart = true
 [node name="CashSFX" type="AudioStreamPlayer" parent="." unique_id=104237451]
 unique_name_in_owner = true
 stream = ExtResource("17_rysoc")
+volume_db = -17.0
+
+[node name="GlassSFX" type="AudioStreamPlayer" parent="." unique_id=1184898330]
+unique_name_in_owner = true
+stream = ExtResource("18_ssvqc")
 volume_db = -17.0

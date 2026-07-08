@@ -52,6 +52,8 @@ const GRAVITY_MULT: float = 1.5
 
 var has_dash_mom = false
 
+const GLASS_SHARDS = preload("res://assets/nodes/glass_shards.tscn")
+
 func debug_point(pos: Vector2, color: Color = Color(1.0, 1.0, 1.0, 1.0)):
 	var node = $Sprite2D.duplicate()
 	node.scale = Vector2(0.2, 0.2)
@@ -142,8 +144,20 @@ func _physics_process(delta: float) -> void:
 
 		if horiz_result:
 			if horiz_result.collider.is_in_group("glass"):
+				
+				%GlassSFX.play()
+				var shards = GLASS_SHARDS.instantiate()
+				shards.position = horiz_result.collider.position
+				debris.add_child(shards)
+				shards.emitting = true
+				get_tree().create_timer(5.0).timeout.connect(func():
+					shards.queue_free()
+					)
 				horiz_result.collider.queue_free()
-	
+				get_tree().create_timer(0.06).timeout.connect(func():
+					velocity.x = last_dir * DASH_VEL * 0.75
+					)
+				
 	# scrapped cuz its annoying to debug
 	## ledge grabbing: (I need to plan this out since I dunno how to visualize this)
 	## uh so basically horiz. raycast in char direction + raycast offet in direction facing down
@@ -200,7 +214,7 @@ func _physics_process(delta: float) -> void:
 			velocity += (get_gravity() * GRAVITY_MULT * SLAM_GRAV_MULT) * delta
 		else:
 			if is_on_wall():
-				velocity += (get_gravity() * GRAVITY_MULT / 2) * delta
+				velocity += (get_gravity() * GRAVITY_MULT / 3) * delta
 			else:
 				velocity += get_gravity() * GRAVITY_MULT * delta
 		if jumps == 0:
