@@ -4,9 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://cnfq0b0wtw103" path="res://assets/images/select-Sheet.png" id="1_p57ef"]
 [ext_resource type="Script" uid="uid://bwa44mqqlcjrc" path="res://scripts/player_movement.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://bpvbvjlqr4ym0" path="res://scripts/select.gd" id="2_u5sy4"]
-[ext_resource type="Texture2D" uid="uid://bkch85xeq0d2s" path="res://assets/images/icon.svg" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://b2yocptfor0lo" path="res://assets/nodes/item.tscn" id="4_lbhrr"]
+[ext_resource type="Texture2D" uid="uid://d1n65xq6yggt1" path="res://assets/images/player_idle-Sheet.png" id="5_bt5mj"]
 [ext_resource type="Texture2D" uid="uid://dfh1g4g1f8ts7" path="res://assets/images/items_spritesheet.png" id="5_iywne"]
+[ext_resource type="Texture2D" uid="uid://2xpslttj21ie" path="res://assets/images/player_run-Sheet.png" id="6_e1j6l"]
 [ext_resource type="Texture2D" uid="uid://vxv1025xior5" path="res://assets/images/terrain-tileset.png" id="6_kvuet"]
 [ext_resource type="TileSet" uid="uid://ct7tftbt6woxa" path="res://assets/tile_set.tres" id="7_bt5mj"]
 [ext_resource type="Texture2D" uid="uid://c8mccqmns3yh7" path="res://assets/images/truck.png" id="8_0tnpc"]
@@ -19,7 +20,7 @@
 [ext_resource type="Script" uid="uid://by1e1vtionn6g" path="res://scripts/tutorial.gd" id="12_kvuet"]
 [ext_resource type="Texture2D" uid="uid://d2sevv5ucs4wr" path="res://assets/images/tutorials/tut_dash.png" id="13_264po"]
 [ext_resource type="Texture2D" uid="uid://buq0ib0oaoup8" path="res://assets/images/tutorials/grab.png" id="14_5newe"]
-[ext_resource type="Texture2D" uid="uid://c5dy650jw12n5" path="res://assets/images/tutorials/slide.png" id="14_37s47"]
+[ext_resource type="Texture2D" uid="uid://mc360gh7lp3m" path="res://assets/images/tutorials/down.png" id="15_bt5mj"]
 [ext_resource type="AudioStream" uid="uid://tlc13f58asnv" path="res://assets/audio/cash-register.mp3" id="17_rysoc"]
 [ext_resource type="Script" uid="uid://bqcsay8bgdrqu" path="res://scripts/control_anim.gd" id="18_1kice"]
 [ext_resource type="AudioStream" uid="uid://b336qrt87h62g" path="res://assets/audio/glass-breaking.mp3" id="18_ssvqc"]
@@ -51,6 +52,138 @@ animations = [{
 "loop": 1,
 "name": &"default",
 "speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_458eo"]
+atlas = ExtResource("5_bt5mj")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3rex"]
+atlas = ExtResource("5_bt5mj")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qouja"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wljb1"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2yb1"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_js0lu"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxtfn"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twgab"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_02fa5"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nepv3"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7025r"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4url"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1280, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ool0"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1408, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pr1ej"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1536, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_05nbr"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1664, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0sl42"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1792, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oaba0"]
+atlas = ExtResource("6_e1j6l")
+region = Rect2(1920, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8tn5n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_458eo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3rex")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qouja")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wljb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v2yb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_js0lu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxtfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_twgab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_02fa5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nepv3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7025r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4url")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ool0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pr1ej")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_05nbr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0sl42")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oaba0")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 32.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6sj1v"]
@@ -153,9 +286,10 @@ script = ExtResource("1_uwrxv")
 select = NodePath("../Select")
 debris = NodePath("../Debris")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D/Character" unique_id=1678045591]
-scale = Vector2(0.75, 1)
-texture = ExtResource("2_yqjtg")
+[node name="Sprite2D" type="AnimatedSprite2D" parent="Node2D/Character" unique_id=764631034]
+sprite_frames = SubResource("SpriteFrames_8tn5n")
+animation = &"run"
+frame_progress = 0.73061794
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Character" unique_id=2065639098]
 shape = SubResource("CapsuleShape2D_6sj1v")
@@ -1106,7 +1240,7 @@ shape = SubResource("RectangleShape2D_8tn5n")
 position = Vector2(-8960, -1840.0001)
 scale = Vector2(0.39131862, 6.4851394)
 script = ExtResource("12_kvuet")
-texture = ExtResource("14_37s47")
+texture = ExtResource("15_bt5mj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TutorialTriggers/slide" unique_id=121379505]
 shape = SubResource("RectangleShape2D_8tn5n")

@@ -26,7 +26,7 @@ const DASH_TIME: float  = 0.5
 
 
 var direction: float = 0
-var last_dir: float = 0
+var last_dir: float = 1
 var jmp_debounce = false
 
 const WALL_JUMP_X_VEL = 2400
@@ -137,7 +137,7 @@ func interact_collide(area: Area2D):
 func _ready() -> void:
 	$FindTick.timeout.connect(find_tick)
 	$Interact.area_entered.connect(interact_collide)
-	
+	$Sprite2D.play("idle")
 
 func _physics_process(delta: float) -> void:
 	if has_dash_mom:
@@ -268,8 +268,13 @@ func _physics_process(delta: float) -> void:
 	# actual horizontal movement (and dashing)
 	direction = Input.get_axis("left", "right")
 	if direction:
+		
 		current_speed = lerpf(BASE_SPEED, MAX_SPEED, curr_accel)
 		velocity.x = lerp(velocity.x, direction * current_speed, LERP_SPEED)
+		if last_dir != direction:
+			var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
+			tween.tween_property($Sprite2D, "scale", Vector2(direction, 1), 0.1)
+			tween.play()
 		if last_wall_jump_dir != 0:
 			if direction == last_wall_jump_dir:
 				curr_accel = 0.75
@@ -281,7 +286,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				last_dir = direction
 				curr_accel = 0.2
-			
+
 		if is_on_floor() and Input.is_action_pressed("down") and not slide_cd:
 			slide_cd = true
 			slide_slam_stop = true
@@ -290,6 +295,10 @@ func _physics_process(delta: float) -> void:
 			velocity.y = 1000
 			$CollisionShape2D.shape.radius = 24.0
 			$CollisionShape2D.shape.height = 48.0
+			var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
+			tween.tween_property($Sprite2D, "skew",deg_to_rad(-40 * direction), 0.15)
+			tween.tween_property($Sprite2D, "skew", deg_to_rad(0), 0.5)
+			tween.play()
 			get_tree().create_timer(0.4).timeout.connect(func():
 				$CollisionShape2D.shape.radius = 48.0
 				$CollisionShape2D.shape.height = 128.0
@@ -308,12 +317,26 @@ func _physics_process(delta: float) -> void:
 		dash_cd = true
 		velocity.x = last_dir * DASH_VEL
 		has_dash_mom = true
+		var tween = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
+		tween.tween_property($Sprite2D, "scale",Vector2(direction, 0.7), 0.15)
+		tween.tween_property($Sprite2D, "scale", Vector2(direction, 1), 0.5)
+		tween.play()
+		tween.finished.connect(func():
+			var tween2 = get_tree().create_tween().set_trans(Tween.TRANS_LINEAR)
+			tween2.tween_property($Sprite2D, "scale", Vector2(direction, 1), 0.1)
+			tween2.play()
+			)
 		get_tree().create_timer(0.35).timeout.connect(func():
 			has_dash_mom = false
 		)
 		get_tree().create_timer(DASH_TIME).timeout.connect(func():
 			dash_cd = false
 		)
+	
+	if direction:
+		$Sprite2D.animation = "run"
+	else:
+		$Sprite2D.animation = "idle"
 	
 	grab_ledge = false
 		
