@@ -2632,6 +2632,16 @@ position = Vector2(-672, -5456)
 value = 400000
 sprite = SubResource("AtlasTexture_fedci")
 
+[node name="House4" parent="Node2D/Items" unique_id=1684848906 instance=ExtResource("4_lbhrr")]
+position = Vector2(-15296, -5776)
+value = 400000
+sprite = SubResource("AtlasTexture_fedci")
+
+[node name="House5" parent="Node2D/Items" unique_id=805334793 instance=ExtResource("4_lbhrr")]
+position = Vector2(-7872, -2176)
+value = 400000
+sprite = SubResource("AtlasTexture_fedci")
+
 [node name="House2" parent="Node2D/Items" unique_id=1432999206 instance=ExtResource("4_lbhrr")]
 position = Vector2(-19040, -6880)
 value = 2000000
