@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var debris: Node2D
 
 @export var items: Array[Dictionary] = []
-var max_items = 3
+var max_items = 5
 
 const BASE_SPEED: float = 800.0
 const MAX_SPEED: float = 1300.0
@@ -108,7 +108,7 @@ func _input(event: InputEvent) -> void:
 			items.clear()
 			GameManager.score += total
 			%Score.label_settings.font_color = Color(0.0, 1.0, 0.0, 1.0)
-			%CashSFX.get_stream_playback().play_stream(CASH_REGISTER)
+			%CashSFX.get_stream_playback().play_stream(CASH_REGISTER, 0 , -17)
 			var tween = get_tree().create_tween()
 			tween.tween_property(%Score.label_settings, "font_color", Color(0.0, 0.0, 0.0, 1.0), 1)
 			tween.play()
@@ -134,7 +134,7 @@ func _input(event: InputEvent) -> void:
 
 func interact_collide(area: Area2D):
 	if area.is_in_group("instant"):
-		%CashSFX.get_stream_playback().play_stream(CASH_REGISTER)
+		%CashSFX.get_stream_playback().play_stream(CASH_REGISTER, 0 , -17)
 		
 		GameManager.score += area.value
 		area.queue_free()
@@ -244,7 +244,7 @@ func _physics_process(delta: float) -> void:
 				#jumps = 1
 	else:
 		if Input.is_action_pressed("down") and can_slam:
-			print("SLAM (placeholder)") #TODO
+			pass # print("SLAM (placeholder)")
 		can_slam = false
 			
 		coyote_time_started = false
