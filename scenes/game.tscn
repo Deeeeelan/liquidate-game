@@ -327,7 +327,7 @@ atlas = ExtResource("5_iywne")
 region = Rect2(0, 0, 128, 129)
 
 [sub_resource type="LabelSettings" id="LabelSettings_sww3w"]
-font_size = 64
+font_size = 50
 
 [sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_qnb83"]
 
@@ -2015,11 +2015,13 @@ texture = ExtResource("15_bt5mj")
 shape = SubResource("RectangleShape2D_8tn5n")
 
 [node name="Sell" type="Sprite2D" parent="Node2D/TutorialTriggers" unique_id=465651678]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0.41960785)
 position = Vector2(-7088, -544)
 texture = ExtResource("19_sww3w")
 
 [node name="Grab" type="Sprite2D" parent="Node2D/TutorialTriggers" unique_id=1558411636]
+unique_name_in_owner = true
 position = Vector2(-4304, -208)
 texture = ExtResource("14_5newe")
 
