@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://fowhkgsnddgf"]
+
+[ext_resource type="Texture2D" uid="uid://cuao6a7qve6ad" path="res://assets/images/hint.png" id="1_uya36"]
+
+[node name="Hint" type="Sprite2D" unique_id=1085521708]
+modulate = Color(1, 1, 1, 0.34509805)
+texture = ExtResource("1_uya36")

@@ -18,7 +18,7 @@ func _ready() -> void:
 				var score_text = "Money Liquidated:\n" + str(GameManager.score) + "/10000000\n"
 				score_text += "Congratulations!" if GameManager.score > 10000000 else "yeah... you might get fired\n\n(hint: take more valuable things!)"
 				%ScoreText.text = score_text
-			else:
+			elif not game_ending:
 				GameManager.time_left -= 1
 			if GameManager.time_left <= 60 * 5:
 				%Sell.visible = false

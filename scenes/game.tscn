@@ -27,6 +27,7 @@
 [ext_resource type="AudioStream" uid="uid://b336qrt87h62g" path="res://assets/audio/glass-breaking.mp3" id="18_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://dj4hdrq86pit0" path="res://assets/images/tutorials/sell.png" id="19_sww3w"]
 [ext_resource type="Script" uid="uid://brqlwx61o1kvh" path="res://scripts/timer.gd" id="23_pl11u"]
+[ext_resource type="Texture2D" uid="uid://cuao6a7qve6ad" path="res://assets/images/hint.png" id="24_suyxu"]
 [ext_resource type="AudioStream" uid="uid://d2p52e8dlce5w" path="res://assets/audio/collect.mp3" id="25_pl11u"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
@@ -1966,30 +1967,30 @@ shape = SubResource("RectangleShape2D_6sj1v")
 [node name="Sprite2D" type="Sprite2D" parent="Node2D/Terrain/Misc/Wall24" unique_id=1362273874]
 texture = SubResource("AtlasTexture_1kice")
 
-[node name="RightBarrier" type="StaticBody2D" parent="Node2D" unique_id=1003935425]
+[node name="RightBarrier" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1003935425]
 position = Vector2(4640, -1184)
 rotation = -3.1415925
 scale = Vector2(2, 2)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/RightBarrier" unique_id=2054124867]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/RightBarrier" unique_id=2054124867]
 position = Vector2(-303.99927, 2980)
 shape = SubResource("RectangleShape2D_sww3w")
 
-[node name="TopBarrier" type="StaticBody2D" parent="Node2D" unique_id=1711387566]
+[node name="TopBarrier" type="StaticBody2D" parent="Node2D/Terrain" unique_id=1711387566]
 position = Vector2(4640, -1184)
 rotation = -3.1415925
 scale = Vector2(2, 2)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TopBarrier" unique_id=237412145]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/TopBarrier" unique_id=237412145]
 position = Vector2(1016.00134, 6687.9985)
 shape = SubResource("RectangleShape2D_suyxu")
 
-[node name="TopBarrier2" type="StaticBody2D" parent="Node2D" unique_id=56230539]
+[node name="TopBarrier2" type="StaticBody2D" parent="Node2D/Terrain" unique_id=56230539]
 position = Vector2(9232, 12480)
 rotation = -3.1415925
 scale = Vector2(2, 2)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/TopBarrier2" unique_id=1578647470]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Terrain/TopBarrier2" unique_id=1578647470]
 position = Vector2(2244.001, 6708.001)
 shape = SubResource("RectangleShape2D_sgl2t")
 
@@ -2922,6 +2923,88 @@ position = Vector2(-8576, -1216)
 
 [node name="Cash2" parent="Node2D/Items/Instant" unique_id=1822377171 instance=ExtResource("8_kvpfn")]
 position = Vector2(-2048, -192)
+
+[node name="Hints" type="Node2D" parent="Node2D" unique_id=2015072458]
+
+[node name="Hint" type="Sprite2D" parent="Node2D/Hints" unique_id=1446562600]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8000, -32)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint2" type="Sprite2D" parent="Node2D/Hints" unique_id=2138489160]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8048, -96)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint3" type="Sprite2D" parent="Node2D/Hints" unique_id=1030259355]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8096, -160)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint4" type="Sprite2D" parent="Node2D/Hints" unique_id=581899400]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8144, -224)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint5" type="Sprite2D" parent="Node2D/Hints" unique_id=495503202]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8192, -288)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint6" type="Sprite2D" parent="Node2D/Hints" unique_id=1380374317]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8224, -336)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint7" type="Sprite2D" parent="Node2D/Hints" unique_id=181834450]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8176, -368)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint8" type="Sprite2D" parent="Node2D/Hints" unique_id=1732499980]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8128, -400)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint9" type="Sprite2D" parent="Node2D/Hints" unique_id=672566146]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8080, -432)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint10" type="Sprite2D" parent="Node2D/Hints" unique_id=1913850378]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8016, -480)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint11" type="Sprite2D" parent="Node2D/Hints" unique_id=297771034]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-7952, -528)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint12" type="Sprite2D" parent="Node2D/Hints" unique_id=41114403]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-7872, -576)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint13" type="Sprite2D" parent="Node2D/Hints" unique_id=1027509721]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-7936, -656)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint15" type="Sprite2D" parent="Node2D/Hints" unique_id=577001146]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-7984, -720)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint16" type="Sprite2D" parent="Node2D/Hints" unique_id=954899552]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8048, -816)
+texture = ExtResource("24_suyxu")
+
+[node name="Hint17" type="Sprite2D" parent="Node2D/Hints" unique_id=138868978]
+modulate = Color(1, 1, 1, 0.34509805)
+position = Vector2(-8128, -928)
+texture = ExtResource("24_suyxu")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467131037]
 
